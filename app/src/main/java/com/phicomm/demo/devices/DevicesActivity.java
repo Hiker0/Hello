@@ -21,7 +21,6 @@ public class DevicesActivity extends AppCompatActivity {
         }
 
         mPresenter = new DevicesPresenter(devicesFragment);
-        mPresenter.start();
     }
 
 }
