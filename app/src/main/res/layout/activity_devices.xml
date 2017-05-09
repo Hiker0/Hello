@@ -8,7 +8,13 @@
     android:orientation="vertical"
     tools:context="com.phicomm.demo.devices.DevicesActivity">
     <TextView
+        android:id="@+id/tv_show"
         android:text="Hello, Devices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:id="@+id/layout_devices_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>
