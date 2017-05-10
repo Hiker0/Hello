@@ -1,19 +1,24 @@
 package com.phicomm.demo.devices;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.phicomm.demo.R;
 import com.phicomm.demo.data.Device;
+import com.phicomm.demo.device.PlugActivity;
 import com.phicomm.demo.devices.DevicesContract.Presenter;
+import com.phicomm.demo.util.ItemClickSupport;
+import com.phicomm.demo.util.ItemClickSupport.OnItemClickListener;
 
 import java.util.List;
 
@@ -57,6 +62,16 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
         mListDevices.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mDevicesAdapter = new DevicesAdapter();
         mListDevices.setAdapter(mDevicesAdapter);
+
+        ItemClickSupport.addTo(mListDevices).setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Device device = (Device) v.getTag();
+
+                mPresenter.openDeviceDetails(device);
+                Log.d(TAG, "position: " + position + " device: " + device.getBssid());
+            }
+        });
     }
 
     @Override
@@ -74,5 +89,20 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
     @Override
     public void showDevices(List<Device> devices) {
         mDevicesAdapter.replaceData(devices);
+    }
+
+    @Override
+    public void showDeviceDetailsUI(Device device) {
+        switch (device.getType().toLowerCase()) {
+            case "plug": {
+                Intent intent = new Intent(getContext(), PlugActivity.class);
+                intent.putExtra("device", device);
+                startActivity(intent);
+            }
+            break;
+
+            default:
+                throw new RuntimeException("can't found device type: " + device.getType());
+        }
     }
 }

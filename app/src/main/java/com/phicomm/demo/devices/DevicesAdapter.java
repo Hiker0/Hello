@@ -61,13 +61,17 @@ public class DevicesAdapter extends RecyclerView.Adapter<ViewHolder> {
         TextView mTvType;
         @BindView(R.id.tv_device_local)
         TextView mTvLocal;
+        View mItemView;
 
         ViewHolder(View itemView) {
             super(itemView);
+            mItemView = itemView;
             ButterKnife.bind(this, itemView);
         }
 
         public void bind(Device device) {
+            mItemView.setTag(device);
+
             mTvBssid.setText(device.getBssid());
             mTvType.setText(device.getType());
             mTvLocal.setText(device.getLocalAddress().toString());

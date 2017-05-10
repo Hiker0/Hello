@@ -5,11 +5,12 @@ import android.support.annotation.NonNull;
 
 import com.phicomm.demo.discovery.IIotAddress;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Device {
+public class Device implements Serializable {
     private String mBssid;
     private String mType;
     private InetAddress mLocalAddress;

@@ -15,11 +15,15 @@ import java.util.List;
 public interface DevicesContract {
     interface View extends BaseView<Presenter> {
         void showDevices(List<Device> devices);
+
+        void showDeviceDetailsUI(Device device);
     }
 
     interface Presenter extends BasePresenter {
         void loadDevices();
 
         void handleIotAddress(ArrayList<IIotAddress> iotAddresses);
+
+        void openDeviceDetails(Device device);
     }
 }

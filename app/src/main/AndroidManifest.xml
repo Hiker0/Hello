@@ -21,6 +21,9 @@
             android:name=".discovery.DiscoveryService"
             android:exported="false">
         </service>
+
+        <activity android:name=".device.PlugActivity">
+        </activity>
     </application>
 
 </manifest>

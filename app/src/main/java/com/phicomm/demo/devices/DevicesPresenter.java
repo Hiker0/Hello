@@ -49,4 +49,9 @@ public class DevicesPresenter implements DevicesContract.Presenter {
         mDevicesRepository.syncIotAddresses(iotAddresses);
         loadDevices();
     }
+
+    @Override
+    public void openDeviceDetails(Device device) {
+        mDevicesView.showDeviceDetailsUI(device);
+    }
 }
