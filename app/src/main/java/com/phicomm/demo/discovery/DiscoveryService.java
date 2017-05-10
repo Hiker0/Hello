@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class DiscoveryService extends IntentService {
@@ -34,8 +36,12 @@ public class DiscoveryService extends IntentService {
     private void handleActionUdpDiscovery() {
         // TODO: 17-5-10 add udp discovery
         ArrayList<SampleIotAddress> iotAddresses = new ArrayList<>();
-        iotAddresses.add(new SampleIotAddress("XX:XX:UU:UU"));
-        iotAddresses.add(new SampleIotAddress("XX:XX:UU:FF"));
+        try {
+            iotAddresses.add(new SampleIotAddress("XX:XX:UU:UU", "Plug", InetAddress.getByName("192.168.1.2")));
+            iotAddresses.add(new SampleIotAddress("XX:XX:UU:FF", "Plug", InetAddress.getByName("192.168.1.3")));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         Intent i = new Intent(ACTION_DISCOVERY_RESULT);
         i.putExtra("resultType", "2222");

@@ -57,6 +57,10 @@ public class DevicesAdapter extends RecyclerView.Adapter<ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_device_bssid)
         TextView mTvBssid;
+        @BindView(R.id.tv_device_type)
+        TextView mTvType;
+        @BindView(R.id.tv_device_local)
+        TextView mTvLocal;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -65,6 +69,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         public void bind(Device device) {
             mTvBssid.setText(device.getBssid());
+            mTvType.setText(device.getType());
+            mTvLocal.setText(device.getLocalAddress().toString());
         }
     }
 }

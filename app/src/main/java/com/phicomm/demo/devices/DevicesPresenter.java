@@ -9,9 +9,7 @@ import com.phicomm.demo.devices.DevicesContract.View;
 import com.phicomm.demo.discovery.IIotAddress;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
