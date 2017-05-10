@@ -39,7 +39,6 @@ public class DiscoveryService extends IntentService {
 
         Intent i = new Intent(ACTION_DISCOVERY_RESULT);
         i.putExtra("resultType", "2222");
-        IIotAddress[] iotAddressesArr = iotAddresses.toArray(new IIotAddress[iotAddresses.size()]);
         i.putParcelableArrayListExtra("result", iotAddresses);
         LocalBroadcastManager.getInstance(this).sendBroadcast(i);
     }

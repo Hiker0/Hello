@@ -14,9 +14,6 @@ import java.util.List;
 
 public interface DevicesContract {
     interface View extends BaseView<Presenter> {
-
-        void hello();
-
         void showDevices(List<Device> devices);
     }
 

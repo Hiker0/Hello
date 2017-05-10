@@ -9,6 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.phicomm.demo.R;
+import com.phicomm.demo.data.DevicesRepository;
 import com.phicomm.demo.discovery.DiscoveryService;
 import com.phicomm.demo.discovery.IIotAddress;
 import com.phicomm.demo.util.ActivityUtils;
@@ -36,7 +37,7 @@ public class DevicesActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), devicesFragment, R.id.layout_devices_container);
         }
 
-        mPresenter = new DevicesPresenter(devicesFragment);
+        mPresenter = new DevicesPresenter(devicesFragment, DevicesRepository.getInstance());
     }
 
     @Override
@@ -44,6 +45,7 @@ public class DevicesActivity extends AppCompatActivity {
         super.onResume();
 
         DiscoveryService.startActionUdpDiscovery(this);
+
         IntentFilter filter = new IntentFilter(DiscoveryService.ACTION_DISCOVERY_RESULT);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }

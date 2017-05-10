@@ -2,7 +2,9 @@ package com.phicomm.demo.discovery;
 
 import android.os.Parcel;
 
-
+/**
+ * 以Sample开头的类,用来作示范
+ */
 public class SampleIotAddress implements IIotAddress {
     public static final Creator<SampleIotAddress> CREATOR = new Creator<SampleIotAddress>() {
         @Override

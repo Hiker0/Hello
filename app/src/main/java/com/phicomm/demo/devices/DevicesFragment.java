@@ -53,7 +53,6 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        Log.d("hzn", "222222222222222");
         mListDevices.setLayoutManager(new LinearLayoutManager(getContext()));
         mDevicesAdapter = new DevicesAdapter();
         mListDevices.setAdapter(mDevicesAdapter);
@@ -72,13 +71,7 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
     }
 
     @Override
-    public void hello() {
-        Log.d(TAG, "test 1111111111111111111");
-    }
-
-    @Override
     public void showDevices(List<Device> devices) {
-        Log.d("hzn", "33333333333333333");
         mDevicesAdapter.replaceData(devices);
     }
 }
