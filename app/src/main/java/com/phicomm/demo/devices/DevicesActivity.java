@@ -1,13 +1,29 @@
 package com.phicomm.demo.devices;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.phicomm.demo.R;
+import com.phicomm.demo.discovery.DiscoveryService;
+import com.phicomm.demo.discovery.IIotAddress;
 import com.phicomm.demo.util.ActivityUtils;
+
+import java.util.ArrayList;
 
 public class DevicesActivity extends AppCompatActivity {
     private DevicesPresenter mPresenter;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ArrayList<IIotAddress> iotAddresses = intent.getParcelableArrayListExtra("result");
+            mPresenter.handleIotAddress(iotAddresses);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,4 +39,17 @@ public class DevicesActivity extends AppCompatActivity {
         mPresenter = new DevicesPresenter(devicesFragment);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        DiscoveryService.startActionUdpDiscovery(this);
+        IntentFilter filter = new IntentFilter(DiscoveryService.ACTION_DISCOVERY_RESULT);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

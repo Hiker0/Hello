@@ -3,7 +3,9 @@ package com.phicomm.demo.devices;
 import com.phicomm.demo.BasePresenter;
 import com.phicomm.demo.BaseView;
 import com.phicomm.demo.data.Device;
+import com.phicomm.demo.discovery.IIotAddress;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,5 +22,7 @@ public interface DevicesContract {
 
     interface Presenter extends BasePresenter {
         void loadDevices();
+
+        void handleIotAddress(ArrayList<IIotAddress> iotAddresses);
     }
 }
