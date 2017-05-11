@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.phicomm.demo.device.plug.PlugFragment">
+    <TextView
+        android:id="@+id/tv_plug_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello,Plug Fragment"/>
+
+    <Button
+        android:id="@+id/bt_plug_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button"/>
+</LinearLayout>

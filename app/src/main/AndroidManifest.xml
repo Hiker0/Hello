@@ -22,7 +22,7 @@
             android:exported="false">
         </service>
 
-        <activity android:name=".device.PlugActivity">
+        <activity android:name=".device.plug.PlugActivity">
         </activity>
     </application>
 

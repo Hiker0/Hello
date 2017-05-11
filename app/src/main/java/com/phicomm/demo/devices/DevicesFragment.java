@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.phicomm.demo.R;
 import com.phicomm.demo.data.Device;
-import com.phicomm.demo.device.PlugActivity;
+import com.phicomm.demo.device.plug.PlugActivity;
 import com.phicomm.demo.devices.DevicesContract.Presenter;
 import com.phicomm.demo.util.ItemClickSupport;
 import com.phicomm.demo.util.ItemClickSupport.OnItemClickListener;
