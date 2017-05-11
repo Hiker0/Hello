@@ -3,6 +3,7 @@ package com.phicomm.demo.devices;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -82,17 +83,19 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
     }
 
     @Override
-    public void setPresenter(Presenter presenter) {
+    public void setPresenter(@NonNull Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
 
     @Override
-    public void showDevices(List<Device> devices) {
+    public void showDevices(@NonNull List<Device> devices) {
+        checkNotNull(devices);
         mDevicesAdapter.replaceData(devices);
     }
 
     @Override
-    public void showDeviceDetailsUI(Device device) {
+    public void showDeviceDetailsUI(@NonNull Device device) {
+        checkNotNull(device);
         switch (device.getType().toLowerCase()) {
             case "plug": {
                 Intent intent = new Intent(getContext(), PlugActivity.class);
