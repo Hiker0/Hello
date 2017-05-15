@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Device implements Serializable {
+
     private String mBssid;
     private String mType;
     private InetAddress mLocalAddress;

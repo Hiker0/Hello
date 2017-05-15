@@ -5,9 +5,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.phicomm.iot.library.connect.ConnectionManager;
-import com.phicomm.iot.library.connect.DatagramSender;
-import com.phicomm.iot.library.connect.DatagramSocketServer;
-import com.phicomm.iot.library.connect.IDatagramServerHandler;
+import com.phicomm.iot.library.connect.udp.DatagramSender;
+import com.phicomm.iot.library.connect.udp.DatagramSocketServer;
+import com.phicomm.iot.library.connect.udp.IDatagramServerHandler;
 import com.phicomm.iot.library.device.SmartDevice;
 import com.phicomm.iot.library.message.BaseMessage;
 import com.phicomm.iot.library.message.PhiMessage;

@@ -1,6 +1,8 @@
-package com.phicomm.iot.library.connect;
+package com.phicomm.iot.library.connect.udp;
 
 import android.util.Log;
+
+import com.phicomm.iot.library.connect.ConnectionManager;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -20,7 +22,7 @@ public class DatagramSocketServer extends Thread {
     boolean mClosed = false;
     List<IDatagramServerHandler> mResolvers;
 
-    DatagramSocketServer(int defaultPort) {
+    public DatagramSocketServer(int defaultPort) {
         Log.d(TAG,"DatagramSocketServer create");
         mPort = defaultPort;
         try {

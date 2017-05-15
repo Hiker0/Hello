@@ -1,4 +1,4 @@
-package com.phicomm.iot.library.device.switcher;
+package com.phicomm.iot.library.devices.switcher;
 
 import com.phicomm.iot.library.device.BaseDevice;
 import com.phicomm.iot.library.device.SmartDevice;

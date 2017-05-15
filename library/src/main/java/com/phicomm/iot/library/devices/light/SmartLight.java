@@ -1,7 +1,7 @@
-package com.phicomm.iot.library.device;
+package com.phicomm.iot.library.devices.light;
 
-import com.phicomm.iot.library.protocol.ILightProtocol;
-import com.phicomm.iot.library.protocol.PhiLightProtocol;
+import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.device.SmartDevice;
 
 /**
  * Created by allen.z on 2017-05-04.

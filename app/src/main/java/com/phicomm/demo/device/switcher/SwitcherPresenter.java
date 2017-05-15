@@ -3,7 +3,7 @@ package com.phicomm.demo.device.switcher;
 import com.phicomm.demo.data.Device;
 import com.phicomm.demo.device.switcher.SwitcherContract.View;
 import com.phicomm.iot.library.device.BaseDevice;
-import com.phicomm.iot.library.device.switcher.SmartSwitcher;
+import com.phicomm.iot.library.devices.switcher.SmartSwitcher;
 
 /**
  * Created by hzn on 17-5-11.

@@ -1,7 +1,7 @@
 package com.phicomm.iot.library.remote.switcher;
 
 import com.phicomm.iot.library.device.BaseDevice;
-import com.phicomm.iot.library.device.switcher.ISwitcher;
+import com.phicomm.iot.library.devices.switcher.ISwitcher;
 import com.phicomm.iot.library.device.SmartDevice;
 
 /**

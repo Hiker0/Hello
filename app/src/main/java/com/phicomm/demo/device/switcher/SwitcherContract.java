@@ -2,7 +2,7 @@ package com.phicomm.demo.device.switcher;
 
 import com.phicomm.demo.BasePresenter;
 import com.phicomm.demo.BaseView;
-import com.phicomm.iot.library.device.switcher.ISwitcher;
+import com.phicomm.iot.library.devices.switcher.ISwitcher;
 
 /**
  * Created by hzn on 17-5-11.

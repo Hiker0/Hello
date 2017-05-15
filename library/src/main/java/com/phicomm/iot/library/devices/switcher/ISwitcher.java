@@ -1,4 +1,4 @@
-package com.phicomm.iot.library.device.switcher;
+package com.phicomm.iot.library.devices.switcher;
 
 /**
  * Created by Johnson on 2017-04-25.
