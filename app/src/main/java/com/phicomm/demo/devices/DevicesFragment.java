@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.phicomm.demo.R;
 import com.phicomm.demo.data.Device;
 import com.phicomm.demo.device.plug.PlugActivity;
+import com.phicomm.demo.device.switcher.SwitcherActivity;
 import com.phicomm.demo.devices.DevicesContract.Presenter;
 import com.phicomm.demo.util.ItemClickSupport;
 import com.phicomm.demo.util.ItemClickSupport.OnItemClickListener;
@@ -103,7 +104,12 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
                 startActivity(intent);
             }
             break;
-
+            case "switcher": {
+                Intent intent = new Intent(getContext(), SwitcherActivity.class);
+                intent.putExtra("device", device);
+                startActivity(intent);
+            }
+            break;
             default:
                 throw new RuntimeException("can't found device type: " + device.getType());
         }

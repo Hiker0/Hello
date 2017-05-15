@@ -8,6 +8,8 @@ import com.phicomm.demo.data.DevicesRepository;
 import com.phicomm.demo.devices.DevicesContract.View;
 import com.phicomm.demo.discovery.IIotAddress;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,11 @@ public class DevicesPresenter implements DevicesContract.Presenter {
     @Override
     public void start() {
         loadDevices();
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     @Override

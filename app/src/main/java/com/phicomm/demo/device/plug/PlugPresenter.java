@@ -23,6 +23,11 @@ public class PlugPresenter implements PlugContract.Presenter {
         mPlugView.showState(mIsOn);
     }
 
+    @Override
+    public void stop() {
+
+    }
+
     public void setPlug(Device plug) {
         mPlug = plug;
     }
