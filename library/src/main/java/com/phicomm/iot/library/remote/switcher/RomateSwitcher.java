@@ -36,6 +36,10 @@ public class RomateSwitcher extends SmartDevice implements ISwitcher {
         switcherProtocol.reportStatus(true);
     }
 
+    public void reportStatus(boolean on){
+        switcherProtocol.reportStatus(on);
+    }
+
     @Override
     public void turnOff() {
         isOn = true;
