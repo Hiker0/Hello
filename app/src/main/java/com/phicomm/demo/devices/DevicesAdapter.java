@@ -73,8 +73,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<ViewHolder> {
             mItemView.setTag(device);
 
             mTvBssid.setText(device.getBssid());
-            mTvType.setText(device.getType());
-            mTvLocal.setText(device.getLocalAddress().toString());
+            mTvType.setText(device.getType().name());
+            mTvLocal.setText(device.getAddress());
         }
     }
 }

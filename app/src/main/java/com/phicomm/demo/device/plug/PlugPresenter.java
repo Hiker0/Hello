@@ -1,7 +1,7 @@
 package com.phicomm.demo.device.plug;
 
-import com.phicomm.demo.data.Device;
 import com.phicomm.demo.device.plug.PlugContract.View;
+import com.phicomm.iot.library.device.BaseDevice;
 
 /**
  * Created by hzn on 17-5-11.
@@ -9,7 +9,7 @@ import com.phicomm.demo.device.plug.PlugContract.View;
 
 public class PlugPresenter implements PlugContract.Presenter {
     public View mPlugView;
-    private Device mPlug;
+    private BaseDevice mPlug;
 
     private boolean mIsOn = false;
 
@@ -28,7 +28,7 @@ public class PlugPresenter implements PlugContract.Presenter {
 
     }
 
-    public void setPlug(Device plug) {
+    public void setPlug(BaseDevice plug) {
         mPlug = plug;
     }
 

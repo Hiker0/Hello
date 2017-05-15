@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.phicomm.demo.R;
-import com.phicomm.demo.data.Device;
 import com.phicomm.demo.util.ActivityUtils;
+import com.phicomm.iot.library.device.BaseDevice;
 
 public class SwitcherActivity extends AppCompatActivity {
     private SwitcherPresenter mSwitcherPresenter;
@@ -24,7 +24,7 @@ public class SwitcherActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        Device device = (Device) intent.getSerializableExtra("device");
+        BaseDevice device = (BaseDevice) intent.getSerializableExtra("device");
 
         mSwitcherPresenter = new SwitcherPresenter(switcherFragment,device);
         mSwitcherPresenter.start();

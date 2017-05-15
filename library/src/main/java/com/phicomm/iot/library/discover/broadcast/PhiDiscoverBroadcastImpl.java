@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.device.TYPE;
 import com.phicomm.iot.library.discover.PhiConstants;
 import com.phicomm.iot.library.discover.DiscoveredDevice;
 import com.phicomm.iot.library.discover.PhiDiscover;
@@ -78,7 +79,7 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
 
     @Override
     public void cancel() {
-        if(mState != PhiConstants.STATE_CANCELED) {
+        if (mState != PhiConstants.STATE_CANCELED) {
             mState = PhiConstants.STATE_CANCELED;
             closeMulticastSocket();
             mHandler.removeCallbacksAndMessages(null);
@@ -118,6 +119,7 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
             }
         }
     }
+
     @Override
     public void addServiceListener(PhiDiscoverListener listener) {
         for (PhiDiscoverListener lis : mDiscoverListeners) {
@@ -158,9 +160,9 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
     }
 
     public void handleQurey(PhiDiscoverPackage phipackage) {
-        if(mHostInfo != null) {
-            BaseDevice.TYPE type = mHostInfo.getType();
-            PhiDiscoverPackage packet = new PhiDiscoverPackage(mHostInfo.getBrand(), type.name(), mHostInfo.getName(), mHostInfo.getBssid());
+        if (mHostInfo != null) {
+            TYPE type = mHostInfo.getType();
+            PhiDiscoverPackage packet = new PhiDiscoverPackage(mHostInfo.getBrand().name(), type.name(), mHostInfo.getName(), mHostInfo.getBssid());
             send(packet);
         }
     }
@@ -246,7 +248,7 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
 
     public boolean shouldIgnorePacket(DatagramPacket packet) {
         boolean result = false;
-        if (mHostInfo !=null && mHostInfo.getAddress() != null) {
+        if (mHostInfo != null && mHostInfo.getAddress() != null) {
             InetAddress from = packet.getAddress();
             try {
                 InetAddress host = InetAddress.getByName(mHostInfo.getAddress());

@@ -6,8 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.phicomm.demo.R;
-import com.phicomm.demo.data.Device;
 import com.phicomm.demo.util.ActivityUtils;
+import com.phicomm.iot.library.device.BaseDevice;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +29,7 @@ public class PlugActivity extends AppCompatActivity {
         mPlugPresenter = new PlugPresenter(plugFragment);
 
         Intent intent = getIntent();
-        Device device = (Device) intent.getSerializableExtra("device");
+        BaseDevice device = (BaseDevice) intent.getSerializableExtra("device");
         mPlugPresenter.setPlug(device);
     }
 }

@@ -2,6 +2,8 @@ package com.phicomm.demo.data;
 
 import android.support.annotation.NonNull;
 
+import com.phicomm.iot.library.device.BaseDevice;
+
 import java.util.List;
 
 /**

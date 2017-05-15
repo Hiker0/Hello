@@ -1,7 +1,7 @@
 package com.phicomm.demo.device.switcher;
 
-import com.phicomm.demo.data.Device;
 import com.phicomm.demo.device.switcher.SwitcherContract.View;
+import com.phicomm.iot.library.device.BRAND;
 import com.phicomm.iot.library.device.BaseDevice;
 import com.phicomm.iot.library.devices.switcher.SmartSwitcher;
 
@@ -11,22 +11,22 @@ import com.phicomm.iot.library.devices.switcher.SmartSwitcher;
 
 public class SwitcherPresenter implements SwitcherContract.Presenter {
     public View mSwitcherView;
-    private Device mDevice;
+    private BaseDevice mDevice;
     private SmartSwitcher mSwitcher;
 
     private boolean mIsOn = false;
 
-    public SwitcherPresenter(View view, Device device) {
+    public SwitcherPresenter(View view, BaseDevice device) {
         mSwitcherView = view;
         mSwitcherView.setPresenter(this);
 
         mDevice = device;
-        BaseDevice dev = new BaseDevice();
-        dev.setAddress(device.getLocalAddress().getHostAddress());
-        dev.setBssid(device.getBssid());
-        dev.setTypeName(device.getType());
-        dev.setBrand("phicomm");
-        mSwitcher = new SmartSwitcher(dev);
+//        BaseDevice dev = new BaseDevice();
+//        dev.setAddress(device.getLocalAddress().getHostAddress());
+//        dev.setBssid(device.getBssid());
+//        dev.setType(device.getType());
+//        dev.setBrand(BRAND.PHICOMM);
+        mSwitcher = new SmartSwitcher(device);
         mSwitcher.setStateChangeListener(new SmartSwitcher.SwitcherStateListener() {
             @Override
             public void onStateChange(boolean on) {

@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.device.TYPE;
 import com.phicomm.iot.library.discover.PhiConstants;
 import com.phicomm.iot.library.discover.DiscoveredDevice;
 import com.phicomm.iot.library.discover.PhiDiscover;
@@ -161,8 +162,8 @@ public class PhiDiscoverMuticastImpl extends PhiDiscover {
 
     public void handleQurey(PhiDiscoverPackage phipackage) {
         if(mHostInfo != null) {
-            BaseDevice.TYPE type = mHostInfo.getType();
-            PhiDiscoverPackage packet = new PhiDiscoverPackage(mHostInfo.getBrand(),type.name(), mHostInfo.getName(), mHostInfo.getBssid());
+            TYPE type = mHostInfo.getType();
+            PhiDiscoverPackage packet = new PhiDiscoverPackage(mHostInfo.getBrand().name(),type.name(), mHostInfo.getName(), mHostInfo.getBssid());
             send(packet);
         }
     }
