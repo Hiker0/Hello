@@ -3,6 +3,7 @@ package com.phicomm.demo.discovery.udpDiscovery;
 
 import android.util.Log;
 
+import com.phicomm.demo.discovery.MeshDiscoveryUtil;
 import com.phicomm.demo.discovery.SampleIotAddress;
 
 import java.io.IOException;
@@ -18,10 +19,20 @@ import java.util.Random;
  * Created by chunya02.li on 2017/5/11.
  */
 
-public class UdpDiscoveryUtil {
+public class UdpDiscoveryUtil implements Runnable {
 
     private static final String TAG = "UdpDiscoveryUtil";
     List<SampleIotAddress> responseList = new ArrayList<SampleIotAddress>();
+    MeshDiscoveryUtil mMeshUti;
+
+    public UdpDiscoveryUtil(MeshDiscoveryUtil meshUtil) {
+        mMeshUti = meshUtil;
+    }
+
+    @Override
+    public void run() {
+        discoverUdpDevices();
+    }
 
     /**
      * alloc the port number
@@ -62,7 +73,8 @@ public class UdpDiscoveryUtil {
         return socket;
     }
 
-    public List<SampleIotAddress> discoverUdpDevices() {
+    private List<SampleIotAddress> discoverUdpDevices() {
+
         DatagramSocket socket = null;
         byte buf_receive[] = new byte[ContantString.RECEIVE_LEN];
         DatagramPacket pack = null;
@@ -75,11 +87,12 @@ public class UdpDiscoveryUtil {
             socket.setSoTimeout(ContantString.SO_TIMEOUT);
             // broadcast content
             pack = new DatagramPacket(realData.getBytes(), realData.length(), ContantString.broadcastAddress, ContantString.IOT_DEVICE_PORT);
-            Log.d(TAG, "discoverDevices socket send");
             socket.send(pack);
-            pack.setData(buf_receive);
+            Log.d(TAG, "discoverDevices socket send send port is =" + ContantString.IOT_DEVICE_PORT + " realData=" + realData);
             long start = System.currentTimeMillis();
             while (true) {
+                Log.d(TAG, "开始监听");
+                pack.setData(buf_receive);
                 socket.receive(pack);
                 long consume = System.currentTimeMillis() - start;
                 Log.d(TAG, "It is send consume=" + consume);
@@ -105,6 +118,8 @@ public class UdpDiscoveryUtil {
                 Log.d(TAG, "discoverDevices: sockect is null, closed in finally");
             }
         }
+        Log.d(TAG, "responseList.size()=" + responseList.size());
+        mMeshUti.notifyDeviceResultAdd(responseList);
         return responseList;
     }
 }

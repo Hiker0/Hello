@@ -28,7 +28,7 @@ public class UdpDataParser {
 
     private static final String DEVICE_PATTERN = DEVICE_PATTERN_TYPE + DEVICE_PATTERN_BSSID + DEVICE_PATTERN_IP;
 
-    private static String TAG = "UdpDataParser";
+    private static String TAG = "lichunya UdpDataParser";
 
     /**
      * check whether the data is valid
@@ -79,6 +79,7 @@ public class UdpDataParser {
         InetAddress responseAddr = null;
         String responseBSSID = null;
         SampleIotAddress mSampleIotAddress = null;
+        Log.d(TAG,"receiveContent="+receiveContent);
         if (UdpDataParser.isValid(receiveContent)) {
             String deviceTypeStr = UdpDataParser.filterType(receiveContent);
             if (deviceTypeStr == null) {
