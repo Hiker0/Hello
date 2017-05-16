@@ -43,7 +43,7 @@ public class DevicesRepository implements DevicesDataSource {
     public void getDevices(@NonNull LoadDevicesCallback callback) {
         for (IIotAddress address : mCachedIotAddress.values()) {
             if (mCachedDevices.containsKey(address.getBSSID())) {
-                BaseDevice device = mCachedDevices.get(address.getBSSID());
+                Device device = mCachedDevices.get(address.getBSSID());
                 // TODO: 17-5-10 update device's status
             } else {
                 Device device = Device.from(address);

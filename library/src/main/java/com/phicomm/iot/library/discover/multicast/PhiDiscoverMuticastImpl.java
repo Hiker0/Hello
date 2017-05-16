@@ -30,6 +30,15 @@ public class PhiDiscoverMuticastImpl extends PhiDiscover {
 
     private final static String TAG = "Discover/MuticastImpl";
     private final static boolean DEBUG = true;
+
+    /**
+     * This is our multicast socket.
+     */
+    protected int mPort;
+    /**
+     * This is our multicast socket.
+     */
+    protected String mIpAddress;
     /**
      * This is the multicast group, we are listening to for multicast DNS messages.
      */
@@ -56,7 +65,8 @@ public class PhiDiscoverMuticastImpl extends PhiDiscover {
 
 
     public PhiDiscoverMuticastImpl(String addr, int port) throws IOException {
-        super(addr, port);
+        mIpAddress = addr;
+        mPort = port;
         Log.d(TAG,"PhiDiscoverMuticastImpl open");
         mDiscoverListeners = Collections.synchronizedList(new ArrayList());
         mDeviceList = Collections.synchronizedList(new ArrayList());

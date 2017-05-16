@@ -13,7 +13,7 @@ public class DiscoveredDevice extends BaseDevice {
     static final int DEFAULT_TTL = 5;
     private int ttl;
 
-    public DiscoveredDevice(String brand, TYPE type, String name, String sn) {
+    public DiscoveredDevice(String brand, TYPE type, String name, String bssid) {
         setBrandName(brand);
         try {
             setType(type);
@@ -21,7 +21,7 @@ public class DiscoveredDevice extends BaseDevice {
             e.printStackTrace();
         }
         setName(name);
-        setBssid(sn);
+        setBssid(bssid);
         ttl = DEFAULT_TTL;
     }
 

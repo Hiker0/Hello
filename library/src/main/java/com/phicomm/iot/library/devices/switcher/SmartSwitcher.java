@@ -13,9 +13,9 @@ public class SmartSwitcher extends SmartDevice {
 
     public SmartSwitcher(BaseDevice device){
         super(device);
-        if(device.getBrand().equals("phicomm")) {
+//        if(device.getBrand().equals("phicomm")) {
             switcherProtocol = new PhiSwitcherProtocol(this);
-        }
+//        }
         setProtocol(switcherProtocol);
     }
 

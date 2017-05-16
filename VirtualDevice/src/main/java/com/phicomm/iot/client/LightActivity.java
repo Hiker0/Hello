@@ -12,6 +12,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.device.TYPE;
+import com.phicomm.iot.library.discover.broadcast.PhiDiscoverBroadcastImpl;
 import com.phicomm.iot.library.remote.light.RomateLight;
 import com.phicomm.iot.library.discover.DiscoveredDevice;
 import com.phicomm.iot.library.discover.PhiDiscover;
@@ -32,9 +34,9 @@ public class LightActivity extends Activity {
     SeekBar progressView;
     private PhiDiscover mDiscover;
     WifiManager.MulticastLock multicastLock;
+    public static final int IOT_DEVICE_PORT = 1025 ;
+    public static final int IOT_APP_PORT = 4025;
 
-    public final static int DEVICE_GROUP_PORT = 2323;
-    public final static String DEVICE_GROUP_ADDRESS = "224.0.0.251";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public class LightActivity extends Activity {
     }
 
     void regester() {
-        DiscoveredDevice host = new DiscoveredDevice("PHICOMM", BaseDevice.TYPE.LIGHT, Build.DEVICE, Build.SERIAL);
+        DiscoveredDevice host = new DiscoveredDevice("PHICOMM", TYPE.LIGHT, Build.DEVICE, Build.SERIAL);
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         if (!wifiManager.isWifiEnabled()) {
@@ -92,7 +94,7 @@ public class LightActivity extends Activity {
         String ip = Utils.intToIp(mIpAddress);
         host.setAddress(ip);
         try {
-            mDiscover = new PhiDiscoverMuticastImpl(DEVICE_GROUP_ADDRESS, DEVICE_GROUP_PORT);
+            mDiscover = new PhiDiscoverBroadcastImpl(IOT_APP_PORT, IOT_DEVICE_PORT);
             mDiscover.setHost(host);
         } catch (IOException e) {
             mDiscover = null;
@@ -108,7 +110,7 @@ public class LightActivity extends Activity {
             Log.e("DeviceListActivity", "Discover start fail", e);
         }
 
-        infoView.setText(host.getJsonString());
+        infoView.setText(host.toString());
         remoteLight = new RomateLight(host);
         remoteLight.open();
         remoteLight.setListener(new RomateLight.RemoteLightListener() {

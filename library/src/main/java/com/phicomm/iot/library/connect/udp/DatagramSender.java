@@ -47,6 +47,10 @@ public class DatagramSender {
 
     public void sendDatagram(int port, InetAddress address, byte[] data, int length) {
         DatagramPacket packet = new DatagramPacket(data, data.length, address, port);
+        sendDatagram(packet);
+    }
+
+    public void sendDatagram(DatagramPacket packet) {
         mHandler.post(new DatagramSendTask(mSocket, packet));
     }
 

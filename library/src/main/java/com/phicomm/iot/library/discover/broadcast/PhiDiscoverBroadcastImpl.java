@@ -3,6 +3,10 @@ package com.phicomm.iot.library.discover.broadcast;
 import android.os.Handler;
 import android.util.Log;
 
+import com.phicomm.iot.library.connect.ConnectionManager;
+import com.phicomm.iot.library.connect.udp.DatagramSender;
+import com.phicomm.iot.library.connect.udp.DatagramSocketServer;
+import com.phicomm.iot.library.connect.udp.IDatagramServerHandler;
 import com.phicomm.iot.library.device.BaseDevice;
 import com.phicomm.iot.library.device.TYPE;
 import com.phicomm.iot.library.discover.PhiConstants;
@@ -10,6 +14,7 @@ import com.phicomm.iot.library.discover.DiscoveredDevice;
 import com.phicomm.iot.library.discover.PhiDiscover;
 import com.phicomm.iot.library.discover.PhiDiscoverListener;
 import com.phicomm.iot.library.discover.PhiDiscoverPackage;
+import com.phicomm.iot.library.message.PhiMessage;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -30,12 +35,7 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
 
     private final static String TAG = "PhiDiscover";
     private final static boolean DEBUG = true;
-    /**
-     * This is the multicast group, we are listening to for multicast DNS messages.
-     */
-    private InetAddress mGroupAddr;
 
-    private MulticastSocket mSocket;
     /**
      * Used to fix live lock problem on unregester.
      */
@@ -49,18 +49,24 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
      */
     private List<PhiDiscoverListener> mDiscoverListeners;
     private List<DiscoveredDevice> mDeviceList;
-    private Thread mListenerThread = null;
     private Timer mTimer;
     private TimerTask mTask;
     private Handler mHandler;
+    private DatagramSender mSender;
+    private DatagramSocketServer mServer;
+    private ServerHandler mServerHandler;
+    int mSendPort;
+    int mReceivPort;
 
 
-    public PhiDiscoverBroadcastImpl(String addr, int port) throws IOException {
-        super(addr, port);
+    public PhiDiscoverBroadcastImpl(int sendPort, int receivePort) throws IOException {
+        mSendPort = sendPort;
+        mReceivPort = receivePort;
         mDiscoverListeners = Collections.synchronizedList(new ArrayList());
         mDeviceList = Collections.synchronizedList(new ArrayList());
         mTimer = new Timer();
         mHandler = new Handler();
+        mServerHandler = new ServerHandler();
     }
 
     @Override
@@ -70,22 +76,27 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
             throw new Exception();
         }
         mDeviceList.clear();
-        openSocket(mIpAddress, mPort);
+        mSender = ConnectionManager.getDatagramSender();
+        mServer = ConnectionManager.getInstance().openDatagramSocketServer(mReceivPort, true);
+        mServer.addDatagramSocketResolver(mServerHandler);
         mState = PhiConstants.STATE_ANOUNCE;
         startAnouncher();
-        mListenerThread = new Thread(new PhiSocketListener(this), "PhiDiscover.SocketListener");
-        mListenerThread.start();
     }
 
     @Override
     public void cancel() {
         if (mState != PhiConstants.STATE_CANCELED) {
             mState = PhiConstants.STATE_CANCELED;
-            closeMulticastSocket();
+            if(mSender != null) {
+                mSender.release();
+            }
+            mSender = null;
+            if(mServer != null) {
+                mServer.removeDatagramSocketResolver(mServerHandler);
+            }
             mHandler.removeCallbacksAndMessages(null);
             mDiscoverListeners.clear();
             mDeviceList.clear();
-            mListenerThread = null;
             if (mTask != null) {
                 mTask.cancel();
                 mTask = null;
@@ -98,24 +109,25 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
         if (PhiConstants.STATE_CANCELED != getState()) {
             synchronized (this) {
                 setState(PhiConstants.STATE_CANCELED);
-                closeMulticastSocket();
+                if(mSender != null) {
+                    mSender.release();
+                }
+                mSender = null;
+                if(mServer != null) {
+                    mServer.removeDatagramSocketResolver(mServerHandler);
+                }
                 mDiscoverListeners = null;
                 mDeviceList.clear();
                 mDeviceList = null;
-                mListenerThread = null;
                 if (mTask != null) {
                     mTask.cancel();
                     mTask = null;
                 }
-                try {
-                    openSocket(mGroupAddr.getHostAddress(), mPort);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                mSender = ConnectionManager.getDatagramSender();
+                mServer = ConnectionManager.getInstance().openDatagramSocketServer(mReceivPort, true);
                 mState = PhiConstants.STATE_ANOUNCE;
                 startAnouncher();
-                mListenerThread = new Thread(new PhiSocketListener(this), "PhiDiscover.SocketListener");
-                mListenerThread.start();
+
             }
         }
     }
@@ -159,11 +171,17 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
         mTask = task;
     }
 
+    public void handleQurey() {
+        Log.d(TAG, "handleQurey");
+        handleQurey(null);
+    }
+
     public void handleQurey(PhiDiscoverPackage phipackage) {
         if (mHostInfo != null) {
             TYPE type = mHostInfo.getType();
             PhiDiscoverPackage packet = new PhiDiscoverPackage(mHostInfo.getBrand().name(), type.name(), mHostInfo.getName(), mHostInfo.getBssid());
-            send(packet);
+            String data = EspressMessage.getAnserData(type, mHostInfo.getBssid(),mHostInfo.getAddress() );
+            send(data.getBytes());
         }
     }
 
@@ -200,50 +218,13 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
             }
         });
     }
-
-    void send(PhiDiscoverPackage phipacket) {
-        byte[] data = phipacket.finish();
-        DatagramPacket packet = new DatagramPacket(data, data.length, mGroupAddr, mPort);
-
-        try {
-            mSocket.send(packet);
-        } catch (IOException e) {
-            Log.e(TAG, "send(DNSOutgoing) - JmDNS can not parse what it sends!!!", e);
-        }
-
+    void send(byte[] data) {
+        DatagramPacket packet = new DatagramPacket(data, data.length, EspressMessage.getAddress(), mSendPort);
+        mSender.sendDatagram(packet);
     }
 
-    private void openSocket(String addr, int port) throws IOException {
-        try {
-            mGroupAddr = InetAddress.getByName(addr);
-            mPort = port;
-            if (mSocket != null) {
-                this.closeMulticastSocket();
-            }
-            mSocket = new MulticastSocket(port);
-
-            mSocket.setTimeToLive(4);
-            mSocket.joinGroup(mGroupAddr);
-        } catch (UnknownHostException e) {
-            Log.e(TAG, "UnknownHost error");
-            throw e;
-        } catch (IOException e) {
-            Log.e(TAG, "MulticastSocket error when creating");
-            throw e;
-        }
-    }
-
-    private void closeMulticastSocket() {
-        if (DEBUG) Log.d(TAG, "closeMulticastSocket()");
-        if (mSocket != null) {
-            try {
-                mSocket.leaveGroup(mGroupAddr);
-                mSocket.close();
-            } catch (Exception exception) {
-                Log.w(TAG, "closeMulticastSocket() Close socket exception ", exception);
-            }
-            mSocket = null;
-        }
+    void send(DatagramPacket packet) {
+        mSender.sendDatagram(packet);
     }
 
     public boolean shouldIgnorePacket(DatagramPacket packet) {
@@ -275,21 +256,33 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
         }
         return result;
     }
+    class ServerHandler implements IDatagramServerHandler {
+        @Override
+        public boolean handle(DatagramPacket datagramPacket) {
+            Log.d(TAG, "handle datagramPacket");
 
+            if (datagramPacket.getAddress().getHostAddress().equals(mHostInfo.getAddress())) {
+                Log.d(TAG, "ignore");
+                return false;
+            }
+
+            byte[] data = datagramPacket.getData();
+            int len = datagramPacket.getLength();
+            int off = datagramPacket.getOffset();
+            String strMsg = new String(data, off, len).trim();
+            if(strMsg.equals(EspressMessage.data)){
+                handleQurey();
+            }
+
+            return true;
+        }
+    }
     public void setClosed(boolean closed) {
         this.mClosed = closed;
     }
 
     public boolean isClosed() {
         return mClosed;
-    }
-
-    public MulticastSocket getSocket() {
-        return mSocket;
-    }
-
-    public InetAddress getGroup() {
-        return mGroupAddr;
     }
 
     public void setState(int state) {

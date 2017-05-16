@@ -4,6 +4,7 @@ import com.phicomm.iot.library.discover.PhiConstants;
 import com.phicomm.iot.library.discover.PhiDiscoverPackage;
 import com.phicomm.iot.library.discover.multicast.PhiDiscoverMuticastImpl;
 
+import java.net.DatagramPacket;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,8 +25,8 @@ public class Anouncer extends TimerTask {
 
     @Override
     public void run() {
-        PhiDiscoverPackage packet = new PhiDiscoverPackage();
-        mDiscoverImpl.send(packet);
+        byte[] data = EspressMessage.getQureyData().getBytes();
+//        mDiscoverImpl.send(data);
 
         try {
             synchronized(this) {
@@ -34,7 +35,7 @@ public class Anouncer extends TimerTask {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mDiscoverImpl.handleQurey(packet);
+        mDiscoverImpl.handleQurey();
         mCount++;
         if(mCount > PhiConstants.MAX_ANOUNCE_NUM){
             mDiscoverImpl.setState(PhiConstants.STATE_ANOUNCED);

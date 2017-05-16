@@ -11,14 +11,6 @@ public abstract class PhiDiscover {
 
     protected DiscoveredDevice mHostInfo;
     /**
-     * This is our multicast socket.
-     */
-    protected int mPort;
-    /**
-     * This is our multicast socket.
-     */
-    protected String mIpAddress;
-    /**
      * Create an instance of PhiDiscover.
      * Can on;y be compile depency jdk level 1.8
      */
@@ -26,10 +18,6 @@ public abstract class PhiDiscover {
 //    {
 //        return new PhiDiscoverMuticastImpl(addr, hostname, sn);
 //    }
-    public PhiDiscover(String addr, int port){
-        mIpAddress = addr;
-        mPort = port;
-    }
     public void setHost(DiscoveredDevice host){
         mHostInfo = host;
     }

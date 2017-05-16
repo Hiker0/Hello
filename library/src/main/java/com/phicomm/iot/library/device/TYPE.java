@@ -63,6 +63,8 @@ public enum TYPE {
             return NEW;
         } else if (serial == PLUG.getSerial()) {
             return PLUG;
+        }else if (serial == SWITCHER.getSerial()) {
+            return SWITCHER;
         } else if (serial == LIGHT.getSerial()) {
             return LIGHT;
         } else if (serial == HUMITURE.getSerial()) {
@@ -94,7 +96,9 @@ public enum TYPE {
             return NEW;
         } else if (typeEnumString.equals(TYPE.PLUG.toString())) {
             return PLUG;
-        } else if (typeEnumString.equals(TYPE.LIGHT.toString())) {
+        } else if (typeEnumString.equals(TYPE.SWITCHER.toString())) {
+            return SWITCHER;
+        }else if (typeEnumString.equals(TYPE.LIGHT.toString())) {
             return LIGHT;
         } else if (typeEnumString.equals(TYPE.HUMITURE.toString())) {
             return HUMITURE;
