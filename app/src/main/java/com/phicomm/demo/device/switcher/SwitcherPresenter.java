@@ -30,6 +30,7 @@ public class SwitcherPresenter implements SwitcherContract.Presenter {
         mSwitcher.setStateChangeListener(new SmartSwitcher.SwitcherStateListener() {
             @Override
             public void onStateChange(boolean on) {
+                mIsOn = on;
                 mSwitcherView.notifyState(on);
             }
         });

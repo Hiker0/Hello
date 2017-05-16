@@ -27,7 +27,6 @@ public class SwitcherActivity extends AppCompatActivity {
         BaseDevice device = (BaseDevice) intent.getSerializableExtra("device");
 
         mSwitcherPresenter = new SwitcherPresenter(switcherFragment,device);
-        mSwitcherPresenter.start();
     }
 
     @Override

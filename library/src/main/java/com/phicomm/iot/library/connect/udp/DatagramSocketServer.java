@@ -23,7 +23,7 @@ public class DatagramSocketServer extends Thread {
     List<IDatagramServerHandler> mResolvers;
 
     public DatagramSocketServer(int defaultPort) {
-        Log.d(TAG,"DatagramSocketServer create");
+        Log.d(TAG,"DatagramSocketServer create:"+defaultPort);
         mPort = defaultPort;
         try {
             mServer = new DatagramSocket(defaultPort);

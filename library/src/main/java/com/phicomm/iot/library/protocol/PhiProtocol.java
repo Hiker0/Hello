@@ -20,8 +20,8 @@ import java.net.DatagramPacket;
  */
 abstract public class PhiProtocol implements IProtocol {
     public final static String TAG = "PhiProtocol/PhiProtocol";
-    final static int DEFAULT_PORT = 5353;
-    final static int DEVICE_PORT = 5353;
+    final static int DEFAULT_PORT = 3434;
+    final static int DEVICE_PORT = 3434;
     final static long DEFAULT_TIMEOUT = 1000;
 
     final static int STATE_CLOSED = 0;
@@ -67,13 +67,15 @@ abstract public class PhiProtocol implements IProtocol {
         mHandler.removeCallbacksAndMessages(null);
         if(mSender != null) {
             mSender.release();
+            mSender = null;
         }
-        mSender = null;
+
         if(mServer != null) {
             mServer.removeDatagramSocketResolver(mServerHandler);
+            mServer.close();
+            mServer = null;
         }
         mDevice = null;
-        mServer = null;
     }
 
     private Handler mHandler = new Handler() {

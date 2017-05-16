@@ -89,10 +89,13 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
             mState = PhiConstants.STATE_CANCELED;
             if(mSender != null) {
                 mSender.release();
+                mSender = null;
             }
-            mSender = null;
+
             if(mServer != null) {
+                mServer.close();
                 mServer.removeDatagramSocketResolver(mServerHandler);
+                mServer = null;
             }
             mHandler.removeCallbacksAndMessages(null);
             mDiscoverListeners.clear();
@@ -114,7 +117,9 @@ public class PhiDiscoverBroadcastImpl extends PhiDiscover {
                 }
                 mSender = null;
                 if(mServer != null) {
+                    mServer.close();
                     mServer.removeDatagramSocketResolver(mServerHandler);
+                    mServer = null;
                 }
                 mDiscoverListeners = null;
                 mDeviceList.clear();

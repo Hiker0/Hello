@@ -22,7 +22,7 @@ import java.net.DatagramPacket;
 public abstract class PhiRemoteProtocol implements IProtocol {
 
     public final static String TAG = "PhiProtocol/Remote";
-    final static int DEFAULT_PORT = 5353;
+    final static int DEFAULT_PORT = 3434;
     final static long DEFAULT_TIMEOUT = 500;
 
     final static int STATE_CLOSED = 0;
