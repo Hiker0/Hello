@@ -49,8 +49,6 @@ public class DiscoveryService extends IntentService {
         // TODO: 17-5-10 add udp discovery
         MeshDiscoveryUtil mMeshDiscoveryUtil= new MeshDiscoveryUtil();
         mMeshDiscoveryUtil.setMeshDiscoverResultListener(mMeshDiscoverResultListener);
-        mMeshDiscoveryUtil.discoverIOTDevices();
-
         Log.d(TAG,"handleActionUdpDiscovery new MeshDiscoveryUtil and start begin");
         try {
             mMeshDiscoveryUtil.discoverIOTDevices();
@@ -65,7 +63,7 @@ public class DiscoveryService extends IntentService {
         mMeshDiscoverResultListener = new IDiscoverResultListener() {
             @Override
             public void onDeviceResultAdd(List<SampleIotAddress> resultList) {
-                Log.d(TAG, "Mesh onDeviceResultAdd resultList.size()="+resultList.size());
+                Log.d(TAG, "Mesh onDeviceResultAdd resultList.size()="+resultList.size() + "send ACTION_DISCOVERY_RESULT broadcast");
                 Intent i = new Intent(ACTION_DISCOVERY_RESULT);
                 i.putExtra("resultType", "2222");
                 i.putParcelableArrayListExtra("result", (ArrayList<? extends Parcelable>) resultList);

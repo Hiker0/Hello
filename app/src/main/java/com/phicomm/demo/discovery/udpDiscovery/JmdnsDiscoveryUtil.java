@@ -22,7 +22,7 @@ import static java.lang.Thread.sleep;
  */
 
 public class JmdnsDiscoveryUtil implements Runnable {
-    private static final String TAG = "lichunya MdnsDiscoverUtil";
+    private static final String TAG = "MdnsDiscoverUtil";
     MeshDiscoveryUtil mMeshUti;
     List<SampleIotAddress> mSampleIotAddressList;
 

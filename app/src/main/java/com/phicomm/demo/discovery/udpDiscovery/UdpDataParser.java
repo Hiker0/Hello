@@ -28,7 +28,7 @@ public class UdpDataParser {
 
     private static final String DEVICE_PATTERN = DEVICE_PATTERN_TYPE + DEVICE_PATTERN_BSSID + DEVICE_PATTERN_IP;
 
-    private static String TAG = "lichunya UdpDataParser";
+    private static String TAG = "UdpDataParser";
 
     /**
      * check whether the data is valid

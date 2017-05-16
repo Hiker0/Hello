@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.phicomm.demo.R;
 import com.phicomm.demo.data.DevicesRepository;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 public class DevicesActivity extends AppCompatActivity {
     private DevicesPresenter mPresenter;
+    private static String TAG = "DevicesActivity";
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -43,7 +45,7 @@ public class DevicesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d(TAG,"onResume() startActionUdpDiscovery and RegisterReceiver");
         DiscoveryService.startActionUdpDiscovery(this);
 
         IntentFilter filter = new IntentFilter(DiscoveryService.ACTION_DISCOVERY_RESULT);
@@ -53,5 +55,11 @@ public class DevicesActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        super.onDestroy();
     }
 }
