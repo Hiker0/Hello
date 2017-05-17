@@ -12,8 +12,8 @@ import android.util.Log;
 import com.phicomm.demo.R;
 import com.phicomm.demo.data.DevicesRepository;
 import com.phicomm.demo.discovery.DiscoveryService;
-import com.phicomm.demo.discovery.IIotAddress;
 import com.phicomm.demo.util.ActivityUtils;
+import com.phicomm.discoverdevice.discoverlibrary.IIotDevice;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class DevicesActivity extends AppCompatActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ArrayList<IIotAddress> iotAddresses = intent.getParcelableArrayListExtra("result");
+            ArrayList<IIotDevice> iotAddresses = intent.getParcelableArrayListExtra("result");
             mPresenter.handleIotAddress(iotAddresses);
         }
     };

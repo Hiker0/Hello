@@ -1,11 +1,9 @@
-package com.phicomm.demo.discovery;
+package com.phicomm.discoverdevice.discoverlibrary;
 
 import android.util.Log;
 
-import com.phicomm.demo.discovery.udpDiscovery.ContantString;
-import com.phicomm.demo.discovery.udpDiscovery.IDiscoverResultListener;
-import com.phicomm.demo.discovery.udpDiscovery.JmdnsDiscoveryUtil;
-import com.phicomm.demo.discovery.udpDiscovery.UdpDiscoveryUtil;
+import com.phicomm.discoverdevice.discoverlibrary.JmdnsDiscover.JmdnsDiscoveryUtil;
+import com.phicomm.discoverdevice.discoverlibrary.udpDiscover.UdpDiscoveryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +14,7 @@ import java.util.List;
  */
 
 public class MeshDiscoveryUtil {
-    private List<SampleIotAddress> mFinalDeviceList = new ArrayList<>();
+    private List<PhiIotDevice> mFinalDeviceList = new ArrayList<>();
     private UdpDiscoveryUtil mUdpDiscover;
     private JmdnsDiscoveryUtil mJmdnsDiscover;
 
@@ -35,7 +33,7 @@ public class MeshDiscoveryUtil {
 
     }
 
-    public void notifyDeviceResultAdd(List<SampleIotAddress> devList) {
+    public void notifyDeviceResultAdd(List<PhiIotDevice> devList) {
         Log.d(TAG, "mDiscoverListeners.size()=" + mDiscoverListeners.size() + "devList.size=" + devList.size());
         for (IDiscoverResultListener listener : mDiscoverListeners) {
             listener.onDeviceResultAdd(devList);
@@ -88,9 +86,9 @@ public class MeshDiscoveryUtil {
 
     private IDiscoverResultListener mDiscoverResultListener = new IDiscoverResultListener() {
         @Override
-        public void onDeviceResultAdd(List<SampleIotAddress> resultList) {
+        public void onDeviceResultAdd(List<PhiIotDevice> resultList) {
             Log.d(TAG,"resultList.size="+resultList);
-            for (SampleIotAddress dev : resultList) {
+            for (PhiIotDevice dev : resultList) {
                 Log.d(TAG,"dev="+dev);
                 if (mFinalDeviceList.contains(dev)) {
                     continue;

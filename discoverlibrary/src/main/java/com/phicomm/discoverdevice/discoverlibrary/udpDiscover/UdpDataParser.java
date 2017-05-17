@@ -1,9 +1,8 @@
-package com.phicomm.demo.discovery.udpDiscovery;
+package com.phicomm.discoverdevice.discoverlibrary.udpDiscover;
 
 import android.util.Log;
 
-import com.phicomm.demo.discovery.SampleIotAddress;
-
+import com.phicomm.discoverdevice.discoverlibrary.PhiIotDevice;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -73,12 +72,12 @@ public class UdpDataParser {
         return dataSplitArray[dataSplitArray.length - 1];
     }
 
-    public static SampleIotAddress parsePackage(DatagramPacket packet) throws UnknownHostException {
+    public static PhiIotDevice parsePackage(DatagramPacket packet) throws UnknownHostException {
         String receiveContent = new String(packet.getData(), packet.getOffset(), packet.getLength()).trim();
         String hostname = null;
         InetAddress responseAddr = null;
         String responseBSSID = null;
-        SampleIotAddress mSampleIotAddress = null;
+        PhiIotDevice mPhiIotDevice = null;
         Log.d(TAG,"receiveContent="+receiveContent);
         if (UdpDataParser.isValid(receiveContent)) {
             String deviceTypeStr = UdpDataParser.filterType(receiveContent);
@@ -87,14 +86,14 @@ public class UdpDataParser {
             } else {
                 hostname = UdpDataParser.filterIpAddress(receiveContent);
                 if (hostname.equals("0.0.0.0")) {
-                    return mSampleIotAddress;
+                    return mPhiIotDevice;
                 }
                 responseAddr = InetAddress.getByName(hostname);
                 Log.d(TAG, receiveContent);
                 responseBSSID = UdpDataParser.filterBssid(receiveContent);
-                mSampleIotAddress = new SampleIotAddress(responseBSSID, deviceTypeStr, responseAddr);
+                mPhiIotDevice = new PhiIotDevice(responseBSSID, deviceTypeStr, responseAddr);
             }
         }
-        return mSampleIotAddress;
+        return mPhiIotDevice;
     }
 }

@@ -1,4 +1,4 @@
-package com.phicomm.demo.discovery.udpDiscovery;
+package com.phicomm.discoverdevice.discoverlibrary;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -27,7 +27,6 @@ public class ContantString {
             e.printStackTrace();
         }
     }
-
     /**
      * if the IOT_APP_PORT is occupied, other random port will be used
      */

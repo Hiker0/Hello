@@ -1,1 +1,1 @@
-include ':app', ':library', ':VirtualDevice'
+include ':app', ':library', ':VirtualDevice', ':discoverlibrary'

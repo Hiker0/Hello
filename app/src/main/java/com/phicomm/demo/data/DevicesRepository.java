@@ -2,8 +2,7 @@ package com.phicomm.demo.data;
 
 import android.support.annotation.NonNull;
 
-import com.phicomm.demo.discovery.IIotAddress;
-import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.discoverdevice.discoverlibrary.IIotDevice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class DevicesRepository implements DevicesDataSource {
     private static DevicesRepository INSTANCE = null;
 
-    Map<String, IIotAddress> mCachedIotAddress;
+    Map<String, IIotDevice> mCachedIotAddress;
     Map<String, Device> mCachedDevices;
 
 
@@ -32,16 +31,16 @@ public class DevicesRepository implements DevicesDataSource {
         return INSTANCE;
     }
 
-    public void syncIotAddresses(ArrayList<IIotAddress> iotAddresses) {
+    public void syncIotAddresses(ArrayList<IIotDevice> iotAddresses) {
         mCachedDevices.clear();
-        for (IIotAddress address : iotAddresses) {
+        for (IIotDevice address : iotAddresses) {
             mCachedIotAddress.put(address.getBSSID(), address);
         }
     }
 
     @Override
     public void getDevices(@NonNull LoadDevicesCallback callback) {
-        for (IIotAddress address : mCachedIotAddress.values()) {
+        for (IIotDevice address : mCachedIotAddress.values()) {
             if (mCachedDevices.containsKey(address.getBSSID())) {
                 Device device = mCachedDevices.get(address.getBSSID());
                 // TODO: 17-5-10 update device's status

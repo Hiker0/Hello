@@ -1,6 +1,6 @@
 package com.phicomm.demo.data;
 
-import com.phicomm.demo.discovery.IIotAddress;
+import com.phicomm.discoverdevice.discoverlibrary.IIotDevice;
 import com.phicomm.iot.library.device.BaseDevice;
 
 /**
@@ -11,7 +11,7 @@ public class Device extends BaseDevice {
 
     }
 
-    static Device from(IIotAddress address){
+    static Device from(IIotDevice address){
         Device device = new Device();
         device.setTypeName(address.getType());
         device.setBssid(address.getBSSID());

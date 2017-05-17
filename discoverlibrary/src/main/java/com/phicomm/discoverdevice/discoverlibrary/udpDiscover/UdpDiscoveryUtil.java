@@ -1,10 +1,10 @@
-package com.phicomm.demo.discovery.udpDiscovery;
-
+package com.phicomm.discoverdevice.discoverlibrary.udpDiscover;
 
 import android.util.Log;
 
-import com.phicomm.demo.discovery.MeshDiscoveryUtil;
-import com.phicomm.demo.discovery.SampleIotAddress;
+import com.phicomm.discoverdevice.discoverlibrary.ContantString;
+import com.phicomm.discoverdevice.discoverlibrary.MeshDiscoveryUtil;
+import com.phicomm.discoverdevice.discoverlibrary.PhiIotDevice;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -22,7 +22,7 @@ import java.util.Random;
 public class UdpDiscoveryUtil implements Runnable {
 
     private static final String TAG = "UdpDiscoveryUtil";
-    List<SampleIotAddress> responseList = new ArrayList<SampleIotAddress>();
+    List<PhiIotDevice> responseList = new ArrayList<PhiIotDevice>();
     MeshDiscoveryUtil mMeshUti;
 
     public UdpDiscoveryUtil(MeshDiscoveryUtil meshUtil) {
@@ -73,7 +73,7 @@ public class UdpDiscoveryUtil implements Runnable {
         return socket;
     }
 
-    private List<SampleIotAddress> discoverUdpDevices() {
+    private List<PhiIotDevice> discoverUdpDevices() {
 
         DatagramSocket socket = null;
         byte buf_receive[] = new byte[ContantString.RECEIVE_LEN];
@@ -91,14 +91,14 @@ public class UdpDiscoveryUtil implements Runnable {
             Log.d(TAG, "discoverDevices socket send send port is =" + ContantString.IOT_DEVICE_PORT + " realData=" + realData);
             long start = System.currentTimeMillis();
             while (true) {
-                Log.d(TAG, "开始监听");
+                Log.d(TAG, "receive data");
                 pack.setData(buf_receive);
                 socket.receive(pack);
                 long consume = System.currentTimeMillis() - start;
                 Log.d(TAG, "It is send consume=" + consume);
-                SampleIotAddress mSampleIotAddress = UdpDataParser.parsePackage(pack);
-                if (mSampleIotAddress != null && !responseList.contains(mSampleIotAddress)) {
-                    responseList.add(mSampleIotAddress);
+                PhiIotDevice mPhiIotDevice = UdpDataParser.parsePackage(pack);
+                if (mPhiIotDevice != null && !responseList.contains(mPhiIotDevice)) {
+                    responseList.add(mPhiIotDevice);
                 }
             }
         } catch (SocketException e) {
@@ -123,4 +123,3 @@ public class UdpDiscoveryUtil implements Runnable {
         return responseList;
     }
 }
-

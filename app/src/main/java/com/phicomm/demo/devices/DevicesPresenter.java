@@ -6,10 +6,8 @@ import com.phicomm.demo.data.Device;
 import com.phicomm.demo.data.DevicesDataSource.LoadDevicesCallback;
 import com.phicomm.demo.data.DevicesRepository;
 import com.phicomm.demo.devices.DevicesContract.View;
-import com.phicomm.demo.discovery.IIotAddress;
+import com.phicomm.discoverdevice.discoverlibrary.IIotDevice;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +50,7 @@ public class DevicesPresenter implements DevicesContract.Presenter {
     }
 
     @Override
-    public void handleIotAddress(ArrayList<IIotAddress> iotAddresses) {
+    public void handleIotAddress(ArrayList<IIotDevice> iotAddresses) {
         mDevicesRepository.syncIotAddresses(iotAddresses);
         loadDevices();
     }

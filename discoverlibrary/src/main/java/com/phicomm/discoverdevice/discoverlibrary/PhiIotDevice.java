@@ -1,4 +1,8 @@
-package com.phicomm.demo.discovery;
+package com.phicomm.discoverdevice.discoverlibrary;
+
+/**
+ * Created by chunya02.li on 2017/5/17.
+ */
 
 import android.os.Parcel;
 import android.support.annotation.NonNull;
@@ -8,29 +12,29 @@ import java.net.InetAddress;
 /**
  * 以Sample开头的类,用来作示范
  */
-public class SampleIotAddress implements IIotAddress {
-    public static final Creator<SampleIotAddress> CREATOR = new Creator<SampleIotAddress>() {
+public class PhiIotDevice implements IIotDevice {
+    public static final Creator<PhiIotDevice> CREATOR = new Creator<PhiIotDevice>() {
         @Override
-        public SampleIotAddress createFromParcel(Parcel in) {
-            return new SampleIotAddress(in);
+        public PhiIotDevice createFromParcel(Parcel in) {
+            return new PhiIotDevice(in);
         }
 
         @Override
-        public SampleIotAddress[] newArray(int size) {
-            return new SampleIotAddress[size];
+        public PhiIotDevice[] newArray(int size) {
+            return new PhiIotDevice[size];
         }
     };
     private String mBSSID;
     private String mType;
     private InetAddress mLocalAddress;
 
-    public SampleIotAddress(@NonNull String bssid, @NonNull String type, @NonNull InetAddress localAddress) {
+    public PhiIotDevice(@NonNull String bssid, @NonNull String type, @NonNull InetAddress localAddress) {
         mBSSID = bssid;
         mType = type;
         mLocalAddress = localAddress;
     }
 
-    protected SampleIotAddress(Parcel in) {
+    protected PhiIotDevice(Parcel in) {
         String[] vals = new String[2];
         in.readStringArray(vals);
         this.mBSSID = vals[0];
