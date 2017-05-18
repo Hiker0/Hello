@@ -91,8 +91,12 @@ public class LightActivity extends Activity {
         }
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         int mIpAddress = wifiInfo.getIpAddress();
+        String mac = wifiInfo.getMacAddress();
+
         String ip = Utils.intToIp(mIpAddress);
         host.setAddress(ip);
+        host.setBssid(mac);
+
         try {
             mDiscover = new PhiDiscoverBroadcastImpl(IOT_APP_PORT, IOT_DEVICE_PORT);
             mDiscover.setHost(host);

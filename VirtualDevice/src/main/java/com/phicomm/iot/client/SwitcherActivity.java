@@ -87,6 +87,7 @@ public class SwitcherActivity extends Activity {
         int mIpAddress = wifiInfo.getIpAddress();
         String ip = Utils.intToIp(mIpAddress);
         host.setAddress(ip);
+        host.setBssid(wifiInfo.getBSSID());
         try {
             mDiscover = new PhiDiscoverBroadcastImpl(IOT_APP_PORT, IOT_DEVICE_PORT);
             mDiscover.setHost(host);
