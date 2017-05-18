@@ -38,9 +38,9 @@ public class PhiSwitcherProtocol extends PhiProtocol implements ISwitcherProtoco
             byte[] status = msg.getInfo();
             if(status.length >0){
                 if(status[0] == PhiSwitcherMessage.STATE_ON){
-                    switcher.onStateChange(true);
+                    switcher.onStatusChange(true);
                 }else if(status[0] == PhiSwitcherMessage.STATE_OFF){
-                    switcher.onStateChange(false);
+                    switcher.onStatusChange(false);
                 }
             }
         }

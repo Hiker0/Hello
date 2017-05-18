@@ -1,22 +1,30 @@
 package com.phicomm.iot.library.devices.switcher;
 
+import android.os.Handler;
+
 import com.phicomm.iot.library.device.BaseDevice;
 import com.phicomm.iot.library.device.SmartDevice;
 
 /**
  * Created by allen.z on 2017-05-04.
  */
-public class SmartSwitcher extends SmartDevice {
+public class SmartSwitcher extends SmartDevice implements SwitchInterface.IListener {
 
-    ISwitcherProtocol switcherProtocol;
+    SwitchInterface.ISwitcher switcherProtocol;
     SwitcherStateListener mListener;
+    Handler mHandler;
 
-    public SmartSwitcher(BaseDevice device){
+    public SmartSwitcher(BaseDevice device) {
         super(device);
 //        if(device.getBrand().equals("phicomm")) {
-            switcherProtocol = new PhiSwitcherProtocol(this);
+        switcherProtocol = new EspSwitcherServer(getAddress(), this);
 //        }
+        mHandler = new Handler();
 
+    }
+
+    void runOnMainThread(Runnable runnable) {
+        mHandler.post(runnable);
     }
 
     public void onConnectSuccess() {
@@ -24,11 +32,11 @@ public class SmartSwitcher extends SmartDevice {
     }
 
     public void open() {
-        switcherProtocol.start();
+        qureyStatus();
     }
 
     public void close() {
-        switcherProtocol.stop();
+
     }
 
     public void setStateChangeListener(SwitcherStateListener listener) {
@@ -43,17 +51,23 @@ public class SmartSwitcher extends SmartDevice {
         switcherProtocol.turnOff();
     }
 
-    public void qureyStatus(){
+    public void qureyStatus() {
         switcherProtocol.qureyStatus();
     }
 
-    public void onStateChange(boolean on){
-        if(mListener != null){
-            mListener.onStateChange(on);
+    @Override
+    public void onStatusChange(final boolean on) {
+        if (mListener != null) {
+            runOnMainThread(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onStateChange(on);
+                }
+            });
         }
     }
 
-    public interface  SwitcherStateListener{
+    public interface SwitcherStateListener {
         void onStateChange(boolean on);
     }
 }
