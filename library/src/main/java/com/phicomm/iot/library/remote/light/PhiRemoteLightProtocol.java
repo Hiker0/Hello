@@ -1,7 +1,7 @@
 package com.phicomm.iot.library.remote.light;
 
-import com.phicomm.iot.library.message.PhiLightMessage;
-import com.phicomm.iot.library.message.PhiMessage;
+import com.phicomm.iot.library.protocol.phi.PhiLightMessage;
+import com.phicomm.iot.library.protocol.phi.PhiMessage;
 import com.phicomm.iot.library.remote.PhiRemoteProtocol;
 
 /**

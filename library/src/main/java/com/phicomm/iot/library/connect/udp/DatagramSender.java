@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
-import com.phicomm.iot.library.message.BaseMessage;
+import com.phicomm.iot.library.protocol.BaseMessage;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

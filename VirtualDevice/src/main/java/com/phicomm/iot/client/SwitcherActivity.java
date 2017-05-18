@@ -110,15 +110,24 @@ public class SwitcherActivity extends Activity {
         remoteSwitcher.setListener(new RomateSwitcher.RemoteSwitchListener() {
             @Override
             public void turnOn() {
-                mSwitcherView.turnOn();
-                lightView.turnOn();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwitcherView.turnOn();
+                        lightView.turnOn();
+                    }
+                });
             }
 
             @Override
             public void turnOff() {
-                lightView.turnOff();
-                mSwitcherView.turnOff();
-                ;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        lightView.turnOff();
+                        mSwitcherView.turnOff();
+                    }
+                });
             }
         });
 

@@ -1,9 +1,9 @@
 package com.phicomm.iot.library.devices.light;
 
-import com.phicomm.iot.library.message.PhiLightMessage;
-import com.phicomm.iot.library.message.PhiMessage;
+import com.phicomm.iot.library.protocol.phi.PhiLightMessage;
+import com.phicomm.iot.library.protocol.phi.PhiMessage;
 import com.phicomm.iot.library.devices.switcher.PhiSwitcherMessage;
-import com.phicomm.iot.library.protocol.PhiProtocol;
+import com.phicomm.iot.library.protocol.phi.PhiProtocol;
 
 /**
  * Created by allen.z on 2017-05-04.

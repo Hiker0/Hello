@@ -1,6 +1,6 @@
 package com.phicomm.iot.library.remote.switcher;
 
-import com.phicomm.iot.library.message.PhiMessage;
+import com.phicomm.iot.library.protocol.phi.PhiMessage;
 import com.phicomm.iot.library.devices.switcher.PhiSwitcherMessage;
 import com.phicomm.iot.library.remote.PhiRemoteProtocol;
 

@@ -1,4 +1,4 @@
-package com.phicomm.iot.library.protocol;
+package com.phicomm.iot.library.protocol.phi;
 
 import android.os.Handler;
 import android.os.Message;
@@ -9,9 +9,8 @@ import com.phicomm.iot.library.connect.udp.DatagramSender;
 import com.phicomm.iot.library.connect.udp.DatagramSocketServer;
 import com.phicomm.iot.library.connect.udp.IDatagramServerHandler;
 import com.phicomm.iot.library.device.SmartDevice;
-import com.phicomm.iot.library.message.BaseMessage;
-import com.phicomm.iot.library.message.PhiMessage;
-import com.phicomm.iot.library.message.PhiSystemMessage;
+import com.phicomm.iot.library.protocol.BaseMessage;
+import com.phicomm.iot.library.protocol.IProtocol;
 
 import java.net.DatagramPacket;
 
@@ -160,7 +159,7 @@ abstract public class PhiProtocol implements IProtocol {
         return false;
     }
 
-    @Override
+
     public void sendMessage(BaseMessage msg) {
         if(mState != STATE_CLOSED) {
             Log.d(TAG,"sendMessage:"+ msg);

@@ -14,10 +14,8 @@ public class SmartLight extends SmartDevice {
     public SmartLight(BaseDevice device){
         super(device);
         lightProtocol = new PhiLightProtocol(this);
-        setProtocol(lightProtocol);
     }
 
-    @Override
     public void onConnectSuccess() {
 
     }
@@ -26,12 +24,10 @@ public class SmartLight extends SmartDevice {
         lightProtocol.setBrightness((byte)brightness);
     }
 
-    @Override
     public void open() {
         lightProtocol.start();
     }
 
-    @Override
     public void close() {
         lightProtocol.stop();
     }

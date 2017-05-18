@@ -1,9 +1,11 @@
-package com.phicomm.iot.library.message;
+package com.phicomm.iot.library.protocol.phi;
+
+import com.phicomm.iot.library.protocol.phi.PhiMessage;
 
 /**
  * Created by allen.z on 2017-05-03.
  */
-public class PhiLightMessage extends PhiMessage{
+public class PhiLightMessage extends PhiMessage {
 
     public final static byte CTR_SET_VALUE= CTR_START+1;
     public final static byte CTR_CHECK_STATUS = CTR_START+3;

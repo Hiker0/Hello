@@ -1,4 +1,4 @@
-package com.phicomm.iot.library.message;
+package com.phicomm.iot.library.protocol;
 
 /**
  * Created by allen.z on 2017-04-26.
@@ -6,7 +6,7 @@ package com.phicomm.iot.library.message;
 public abstract class BaseMessage {
     private String addr;
     private int port;
-    BaseMessage(){
+    protected BaseMessage(){
 
     }
 

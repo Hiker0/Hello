@@ -16,24 +16,20 @@ public class SmartSwitcher extends SmartDevice {
 //        if(device.getBrand().equals("phicomm")) {
             switcherProtocol = new PhiSwitcherProtocol(this);
 //        }
-        setProtocol(switcherProtocol);
+
     }
 
-    @Override
     public void onConnectSuccess() {
 
     }
 
-    @Override
     public void open() {
         switcherProtocol.start();
     }
 
-    @Override
     public void close() {
         switcherProtocol.stop();
     }
-
 
     public void setStateChangeListener(SwitcherStateListener listener) {
         mListener = listener;

@@ -13,16 +13,14 @@ public class RomateSwitcher extends SmartDevice implements ISwitcher {
     boolean isOn;
     public RomateSwitcher(BaseDevice dev) {
         super(dev);
-        switcherProtocol = new PhiRemoteSwitcherProtocol(this);
+        switcherProtocol = new EspRemoteSwitcher(this,this);
     }
 
 
-    @Override
     public void open() {
         switcherProtocol.start();
     }
 
-    @Override
     public void close() {
         switcherProtocol.stop();
     }
@@ -54,11 +52,6 @@ public class RomateSwitcher extends SmartDevice implements ISwitcher {
     @Override
     public boolean isOn() {
         return isOn;
-    }
-
-    @Override
-    public void onConnectSuccess() {
-
     }
 
     public void setListener(RemoteSwitchListener listener){

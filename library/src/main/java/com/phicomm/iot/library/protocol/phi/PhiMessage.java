@@ -1,4 +1,6 @@
-package com.phicomm.iot.library.message;
+package com.phicomm.iot.library.protocol.phi;
+
+import com.phicomm.iot.library.protocol.BaseMessage;
 
 import java.net.DatagramPacket;
 

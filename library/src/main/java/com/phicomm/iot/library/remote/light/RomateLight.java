@@ -19,12 +19,10 @@ public class RomateLight extends SmartDevice {
     }
 
 
-    @Override
     public void open() {
         lightProtocol.start();
     }
 
-    @Override
     public void close() {
         lightProtocol.stop();
     }
@@ -41,11 +39,6 @@ public class RomateLight extends SmartDevice {
 
     public byte getBrightness(){
         return  brightness;
-    }
-
-    @Override
-    public void onConnectSuccess() {
-
     }
 
     public void setListener(RemoteLightListener listener){

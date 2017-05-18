@@ -9,9 +9,9 @@ import com.phicomm.iot.library.connect.udp.DatagramSender;
 import com.phicomm.iot.library.connect.udp.DatagramSocketServer;
 import com.phicomm.iot.library.connect.udp.IDatagramServerHandler;
 import com.phicomm.iot.library.device.SmartDevice;
-import com.phicomm.iot.library.message.BaseMessage;
-import com.phicomm.iot.library.message.PhiMessage;
-import com.phicomm.iot.library.message.PhiSystemMessage;
+import com.phicomm.iot.library.protocol.BaseMessage;
+import com.phicomm.iot.library.protocol.phi.PhiMessage;
+import com.phicomm.iot.library.protocol.phi.PhiSystemMessage;
 import com.phicomm.iot.library.protocol.IProtocol;
 
 import java.net.DatagramPacket;
@@ -100,7 +100,7 @@ public abstract class PhiRemoteProtocol implements IProtocol {
     void sendMessageInner(BaseMessage msg){
         mSender.sendDatagram(msg, mServer.getSocket());
     }
-    @Override
+
     public void sendMessage(BaseMessage msg) {
         Log.d(TAG,"send:"+msg);
         msg.setAddress(hostAddr);

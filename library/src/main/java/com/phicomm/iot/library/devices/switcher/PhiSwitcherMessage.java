@@ -1,6 +1,6 @@
 package com.phicomm.iot.library.devices.switcher;
 
-import com.phicomm.iot.library.message.PhiMessage;
+import com.phicomm.iot.library.protocol.phi.PhiMessage;
 
 /**
  * Created by allen.z on 2017-05-03.

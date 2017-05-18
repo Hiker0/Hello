@@ -1,4 +1,4 @@
-package com.phicomm.iot.library.message;
+package com.phicomm.iot.library.protocol.phi;
 
 /**
  * Created by allen.z on 2017-05-03.
