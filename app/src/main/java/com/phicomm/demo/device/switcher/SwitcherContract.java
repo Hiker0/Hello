@@ -10,11 +10,13 @@ import com.phicomm.demo.BaseView;
 public interface SwitcherContract {
     interface Presenter extends BasePresenter {
         void turnOn();
+
         void turnOff();
-        boolean isOn();
+
+        void refresh();
     }
 
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
         void notifyState(boolean on);
     }
 }

@@ -60,7 +60,8 @@ public class SwitcherPresenter implements SwitcherContract.Presenter {
     }
 
     @Override
-    public boolean isOn() {
-        return false;
+    public void refresh() {
+        mSwitcher.qureyStatus();
     }
+
 }

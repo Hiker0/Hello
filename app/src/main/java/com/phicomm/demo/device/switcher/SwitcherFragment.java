@@ -4,6 +4,7 @@ package com.phicomm.demo.device.switcher;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,7 +29,8 @@ public class SwitcherFragment extends Fragment implements SwitcherContract.View 
     LEDView mLedView;
     @BindView(R.id.logo)
     ImageView mLogoView;
-
+    @BindView(R.id.swiperefreshlayout)
+    SwipeRefreshLayout mRefresh;
     public SwitcherFragment() {
         // Required empty public constructor
     }
@@ -42,13 +44,20 @@ public class SwitcherFragment extends Fragment implements SwitcherContract.View 
 
     @Override
     public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
-//        ButterKnife.bind(this, view);
-        mSwitcherView = (SwitcherView) view.findViewById(R.id.switcher);
-        mLedView = (LEDView) view.findViewById(R.id.led);
+        ButterKnife.bind(this, view);
+//        mSwitcherView = (SwitcherView) view.findViewById(R.id.switcher);
+//        mLedView = (LEDView) view.findViewById(R.id.led);
         initView();
     }
 
     void initView(){
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPlugPresenter.refresh();
+                mRefresh.setRefreshing(false);
+            }
+        });
 
         mSwitcherView.setListener(new SwitcherView.Listener() {
             @Override
