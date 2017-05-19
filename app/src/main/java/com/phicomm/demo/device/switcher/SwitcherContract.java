@@ -8,8 +8,10 @@ import com.phicomm.demo.BaseView;
  */
 
 public interface SwitcherContract {
-    interface Presenter extends BasePresenter , ISwitcher {
-
+    interface Presenter extends BasePresenter {
+        void turnOn();
+        void turnOff();
+        boolean isOn();
     }
 
     interface View extends BaseView<Presenter>{
