@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import com.phicomm.iot.library.R;
-import com.phicomm.iot.library.devices.switcher.ISwitcher;
 
 /**
  * Created by allen.z on 2017-04-28.

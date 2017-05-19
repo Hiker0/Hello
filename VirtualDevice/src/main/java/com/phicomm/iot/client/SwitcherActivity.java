@@ -27,7 +27,6 @@ import java.io.IOException;
  * Created by allen.z on 2017-04-27.
  */
 public class SwitcherActivity extends Activity {
-    boolean isOn = false;
     RomateSwitcher remoteSwitcher;
     LightView lightView;
     TextView infoView;

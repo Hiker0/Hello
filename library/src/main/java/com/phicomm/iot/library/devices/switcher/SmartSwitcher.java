@@ -17,7 +17,7 @@ public class SmartSwitcher extends SmartDevice implements SwitchInterface.IListe
     public SmartSwitcher(BaseDevice device) {
         super(device);
 //        if(device.getBrand().equals("phicomm")) {
-        switcherProtocol = new EspSwitcherServer(getAddress(), this);
+        switcherProtocol = new EspSwitcherService(getAddress(), this);
 //        }
         mHandler = new Handler();
 

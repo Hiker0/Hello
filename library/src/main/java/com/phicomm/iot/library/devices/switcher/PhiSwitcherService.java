@@ -6,10 +6,10 @@ import com.phicomm.iot.library.protocol.phi.PhiProtocol;
 /**
  * Created by allen.z on 2017-05-04.
  */
-public class PhiSwitcherProtocol extends PhiProtocol implements ISwitcherProtocol {
+public class PhiSwitcherService extends PhiProtocol implements SwitchInterface.ISwitcher {
     public final static String TAG = "PhiProtocol/Switcher";
     SmartSwitcher switcher;
-    public PhiSwitcherProtocol(SmartSwitcher device) {
+    public PhiSwitcherService(SmartSwitcher device) {
         super(device);
         switcher = device;
     }

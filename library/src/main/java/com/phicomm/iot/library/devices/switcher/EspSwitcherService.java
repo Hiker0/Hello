@@ -14,12 +14,12 @@ import rx.functions.Action1;
  * Date  : 2017-05-18
  * last modified: 2017-05-18
  */
-public class EspSwitcherServer extends EspClient implements SwitchInterface.ISwitcher {
+public class EspSwitcherService extends EspClient implements SwitchInterface.ISwitcher {
     String ipAddress;
     SwitchInterface.IListener mListener;
 
 
-    EspSwitcherServer(String host, SwitchInterface.IListener listener) {
+    EspSwitcherService(String host, SwitchInterface.IListener listener) {
         super(host);
         ipAddress = host;
         mListener = listener;

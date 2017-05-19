@@ -7,7 +7,7 @@ import com.phicomm.iot.library.remote.PhiRemoteProtocol;
 /**
  * Created by allen.z on 2017-05-05.
  */
-public class PhiRemoteSwitcherProtocol extends PhiRemoteProtocol implements IRemoteSwitcher {
+public class PhiRemoteSwitcherProtocol extends PhiRemoteProtocol implements RemoteSwitcherInterface.IReporter {
     RomateSwitcher switcher;
     public PhiRemoteSwitcherProtocol(RomateSwitcher device) {
         super(device);

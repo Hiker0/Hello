@@ -39,39 +39,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress("192.168.2.223", 5858), 5000);
-                    System.out.println("192.168.2.223" + socket.toString());
-                    OutputStream oo = socket.getOutputStream();
-
-                    //向服务器发送信息
-                    oo.write("android 客户端".getBytes("gbk"));
-                    oo.flush();
-                } catch (Exception e) {
-                    System.err.println("192.168.2.223 失败");
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress("192.168.2.223", 5858), 5000);
-                    System.out.println("192.168.2.223" + socket.toString());
-                } catch (Exception e) {
-                    System.err.println("192.168.2.223 失败");
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
     }
 }

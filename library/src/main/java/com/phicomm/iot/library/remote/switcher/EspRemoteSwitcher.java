@@ -1,10 +1,9 @@
 package com.phicomm.iot.library.remote.switcher;
 
 import com.google.gson.Gson;
-import com.phicomm.iot.library.connect.NanoHTTPD;
 import com.phicomm.iot.library.device.BaseDevice;
 import com.phicomm.iot.library.device.SmartDevice;
-import com.phicomm.iot.library.devices.switcher.ISwitcher;
+import com.phicomm.iot.library.devices.switcher.SwitchInterface;
 import com.phicomm.iot.library.protocol.esp.EspHttpServer;
 import com.phicomm.iot.library.protocol.esp.Info;
 import com.phicomm.iot.library.protocol.esp.StatusResponse;
@@ -16,11 +15,11 @@ import java.io.IOException;
  * Date  : 2017-05-17
  * last modified: 2017-05-17
  */
-public class EspRemoteSwitcher extends SmartDevice implements IRemoteSwitcher  {
+public class EspRemoteSwitcher extends SmartDevice implements RemoteSwitcherInterface.IReporter  {
 
     SwitcherHttpServer mServer;
-    ISwitcher mSwitcher;
-    EspRemoteSwitcher(BaseDevice device, ISwitcher switcher){
+    RemoteSwitcherInterface.ISwitcher mSwitcher;
+    EspRemoteSwitcher(BaseDevice device, RemoteSwitcherInterface.ISwitcher switcher){
         super(device);
         mServer = new SwitcherHttpServer();
         mSwitcher = switcher;

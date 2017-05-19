@@ -1,14 +1,13 @@
 package com.phicomm.iot.library.remote.switcher;
 
 import com.phicomm.iot.library.device.BaseDevice;
-import com.phicomm.iot.library.devices.switcher.ISwitcher;
 import com.phicomm.iot.library.device.SmartDevice;
 
 /**
  * Created by allen.z on 2017-05-05.
  */
-public class RomateSwitcher extends SmartDevice implements ISwitcher {
-    IRemoteSwitcher switcherProtocol;
+public class RomateSwitcher extends SmartDevice implements RemoteSwitcherInterface.ISwitcher {
+    RemoteSwitcherInterface.IReporter switcherProtocol;
     RemoteSwitchListener mListener;
     boolean isOn;
     public RomateSwitcher(BaseDevice dev) {
