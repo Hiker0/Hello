@@ -98,12 +98,7 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
     public void showDeviceDetailsUI(@NonNull Device device) {
         checkNotNull(device);
         switch (device.getType()) {
-            case PLUG: {
-                Intent intent = new Intent(getContext(), PlugActivity.class);
-                intent.putExtra("device", device);
-                startActivity(intent);
-            }
-            break;
+            case PLUG:
             case SWITCHER: {
                 Intent intent = new Intent(getContext(), SwitcherActivity.class);
                 intent.putExtra("device", device);

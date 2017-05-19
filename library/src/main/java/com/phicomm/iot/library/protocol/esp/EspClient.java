@@ -31,7 +31,7 @@ public class EspClient implements IProtocol {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     protected EspClient(String host) {
-        this(host, 8080);
+        this(host, 80);
     }
 
     protected EspClient(String host, int port) {

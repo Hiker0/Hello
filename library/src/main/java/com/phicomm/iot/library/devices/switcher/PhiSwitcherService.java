@@ -2,6 +2,7 @@ package com.phicomm.iot.library.devices.switcher;
 
 import com.phicomm.iot.library.protocol.phi.PhiMessage;
 import com.phicomm.iot.library.protocol.phi.PhiProtocol;
+import com.phicomm.iot.library.devices.switcher.SwitchInterface.OperateFinish;
 
 /**
  * Created by allen.z on 2017-05-04.
@@ -20,13 +21,13 @@ public class PhiSwitcherService extends PhiProtocol implements SwitchInterface.I
     }
 
     @Override
-    public void turnOn() {
+    public void turnOn(OperateFinish finish) {
         PhiMessage msg = PhiSwitcherMessage.createOnMessage();
         sendMessage(msg);
     }
 
     @Override
-    public void turnOff() {
+    public void turnOff(OperateFinish finish) {
         PhiMessage msg = PhiSwitcherMessage.createOffMessage();
         sendMessage(msg);
     }

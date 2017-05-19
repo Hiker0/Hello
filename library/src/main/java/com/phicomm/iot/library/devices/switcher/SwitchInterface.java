@@ -9,12 +9,16 @@ import com.phicomm.iot.library.protocol.IProtocol;
  */
 public interface SwitchInterface {
     interface ISwitcher extends IProtocol {
-        void turnOn();
-        void turnOff();
+        void turnOn(OperateFinish finish);
+        void turnOff(OperateFinish finish);
         void qureyStatus();
     }
 
     interface IListener{
         void onStatusChange(boolean on);
+    }
+
+    interface OperateFinish{
+        void OnFinish();
     }
 }

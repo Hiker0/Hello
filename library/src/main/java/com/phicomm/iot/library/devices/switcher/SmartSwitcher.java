@@ -27,10 +27,6 @@ public class SmartSwitcher extends SmartDevice implements SwitchInterface.IListe
         mHandler.post(runnable);
     }
 
-    public void onConnectSuccess() {
-
-    }
-
     public void open() {
         qureyStatus();
     }
@@ -39,16 +35,33 @@ public class SmartSwitcher extends SmartDevice implements SwitchInterface.IListe
 
     }
 
+    private void refresh(){
+        runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                qureyStatus();
+            }
+        });
+    }
+
     public void setStateChangeListener(SwitcherStateListener listener) {
         mListener = listener;
     }
 
     public void turnOn() {
-        switcherProtocol.turnOn();
+        switcherProtocol.turnOn(new SwitchInterface.OperateFinish() {
+            public void OnFinish() {
+                refresh();
+            }
+        });
     }
 
     public void turnOff() {
-        switcherProtocol.turnOff();
+        switcherProtocol.turnOff(new SwitchInterface.OperateFinish() {
+            public void OnFinish() {
+                refresh();
+            }
+        });
     }
 
     public void qureyStatus() {

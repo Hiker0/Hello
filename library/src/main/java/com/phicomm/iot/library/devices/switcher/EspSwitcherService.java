@@ -3,7 +3,7 @@ package com.phicomm.iot.library.devices.switcher;
 import com.google.gson.Gson;
 import com.phicomm.iot.library.protocol.esp.EspClient;
 import com.phicomm.iot.library.protocol.esp.StatusResponse;
-
+import com.phicomm.iot.library.devices.switcher.SwitchInterface.OperateFinish;
 import java.io.IOException;
 
 import okhttp3.Response;
@@ -32,16 +32,16 @@ public class EspSwitcherService extends EspClient implements SwitchInterface.ISw
     }
 
     @Override
-    public void turnOn() {
-        changeStatus(1);
+    public void turnOn(OperateFinish finish) {
+        changeStatus(1, finish);
     }
 
     @Override
-    public void turnOff() {
-        changeStatus(0);
+    public void turnOff(SwitchInterface.OperateFinish finish) {
+        changeStatus(0, finish);
     }
 
-    void changeStatus(int status) {
+    void changeStatus(int status, final OperateFinish finish) {
         StatusResponse statusResponse = new StatusResponse();
         statusResponse.setStatus(status);
         Gson gson = new Gson();
@@ -50,7 +50,10 @@ public class EspSwitcherService extends EspClient implements SwitchInterface.ISw
         postCommand(url, gson.toJson(statusResponse), new Action1<Response>() {
             @Override
             public void call(Response response) {
-                handleStatusResponse(response);
+//                handleStatusResponse(response);
+                if (response.isSuccessful()) {
+                    finish.OnFinish();
+                }
             }
         });
     }
@@ -61,7 +64,7 @@ public class EspSwitcherService extends EspClient implements SwitchInterface.ISw
                 Gson gson = new Gson();
                 String json = response.body().string();
                 StatusResponse statusResponse = gson.fromJson(json, StatusResponse.class);
-                if (mListener != null) {
+                if (mListener != null && statusResponse != null) {
                     boolean on = statusResponse.getStatus() == 1;
                     mListener.onStatusChange(on);
                 }
