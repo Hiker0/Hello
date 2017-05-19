@@ -23,8 +23,11 @@ public class DevicesActivity extends AppCompatActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ArrayList<IIotDevice> iotAddresses = intent.getParcelableArrayListExtra("result");
-            mPresenter.handleIotAddress(iotAddresses);
+            if (intent.getAction().equals(DiscoveryService.ACTION_DISCOVERY_RESULT)) {
+                ArrayList<IIotDevice> iotAddresses = intent.getParcelableArrayListExtra("result");
+                Log.d(TAG, "iotAddresses.size=" + iotAddresses.size());
+                mPresenter.handleIotAddress(iotAddresses);
+            }
         }
     };
 
