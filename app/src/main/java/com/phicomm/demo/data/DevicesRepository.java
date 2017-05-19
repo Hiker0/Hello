@@ -33,6 +33,7 @@ public class DevicesRepository implements DevicesDataSource {
 
     public void syncIotAddresses(ArrayList<IIotDevice> iotAddresses) {
         mCachedDevices.clear();
+        mCachedIotAddress.clear();
         for (IIotDevice address : iotAddresses) {
             mCachedIotAddress.put(address.getBSSID(), address);
         }

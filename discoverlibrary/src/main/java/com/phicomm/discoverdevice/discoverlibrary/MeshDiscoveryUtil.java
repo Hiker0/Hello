@@ -7,7 +7,9 @@ import com.phicomm.discoverdevice.discoverlibrary.udpDiscover.UdpDiscoveryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chunya02.li on 2017/5/15.
@@ -15,6 +17,7 @@ import java.util.List;
 
 public class MeshDiscoveryUtil {
     private List<PhiIotDevice> mFinalDeviceList = new ArrayList<>();
+    private Map<String, IIotDevice> mCachedIotAddress;
     private UdpDiscoveryUtil mUdpDiscover;
     private JmdnsDiscoveryUtil mJmdnsDiscover;
 
@@ -30,6 +33,7 @@ public class MeshDiscoveryUtil {
         mDiscoverListeners = Collections.synchronizedList(new ArrayList());
         mUdpDiscover = new UdpDiscoveryUtil(this);
         mJmdnsDiscover = new JmdnsDiscoveryUtil(this);
+        mCachedIotAddress = new HashMap<>(0);
 
     }
 
@@ -52,6 +56,7 @@ public class MeshDiscoveryUtil {
         Log.d(TAG, "discoverIOTDevices");
         mFinalDeviceList.clear();
         mDiscoverListeners.clear();
+        mCachedIotAddress.clear();
         if (mUdpDiscoveryThread != null) {
             mUdpDiscoveryThread = null;
         }
@@ -87,12 +92,13 @@ public class MeshDiscoveryUtil {
     private IDiscoverResultListener mDiscoverResultListener = new IDiscoverResultListener() {
         @Override
         public void onDeviceResultAdd(List<PhiIotDevice> resultList) {
-            Log.d(TAG,"resultList.size="+resultList);
             for (PhiIotDevice dev : resultList) {
-                Log.d(TAG,"dev="+dev);
-                if (mFinalDeviceList.contains(dev)) {
+                String mBssid= dev.getBSSID();
+                Log.d(TAG,"dev.mBssid="+mBssid + "mFinalDeviceList.size()="+mFinalDeviceList.size());
+                if(mCachedIotAddress.containsKey(mBssid)){
                     continue;
                 } else {
+                    mCachedIotAddress.put(mBssid,dev);
                     mFinalDeviceList.add(dev);
                 }
             }
