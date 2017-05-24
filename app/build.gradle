@@ -32,6 +32,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile project(path: ':library')
-    compile project(':discoverlibrary')
     compile project(path: ':smartconfig')
 }

@@ -1,10 +1,10 @@
-package com.phicomm.discoverdevice.discoverlibrary.udpDiscover;
+package com.phicomm.iot.library.discover.udpDiscover;
 
 import android.util.Log;
 
-import com.phicomm.discoverdevice.discoverlibrary.ContantString;
-import com.phicomm.discoverdevice.discoverlibrary.MeshDiscoveryUtil;
-import com.phicomm.discoverdevice.discoverlibrary.PhiIotDevice;
+import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.discover.MeshDiscoveryUtil;
+import com.phicomm.iot.library.discover.PhiConstants;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -22,7 +22,7 @@ import java.util.Random;
 public class UdpDiscoveryUtil implements Runnable {
 
     private static final String TAG = "UdpDiscoveryUtil";
-    List<PhiIotDevice> responseList = new ArrayList<PhiIotDevice>();
+    List<BaseDevice> responseList = new ArrayList<BaseDevice>();
     MeshDiscoveryUtil mMeshUti;
 
     public UdpDiscoveryUtil(MeshDiscoveryUtil meshUtil) {
@@ -73,22 +73,22 @@ public class UdpDiscoveryUtil implements Runnable {
         return socket;
     }
 
-    private List<PhiIotDevice> discoverUdpDevices() {
+    private List<BaseDevice> discoverUdpDevices() {
 
         DatagramSocket socket = null;
-        byte buf_receive[] = new byte[ContantString.RECEIVE_LEN];
+        byte buf_receive[] = new byte[PhiConstants.RECEIVE_LEN];
         DatagramPacket pack = null;
-        String realData = ContantString.data;
+        String realData = PhiConstants.data;
         responseList.clear();
         try {
             // alloc port for the socket
-            socket = allocPort(ContantString.IOT_APP_PORT);
+            socket = allocPort(PhiConstants.IOT_APP_PORT);
             // set receive timeout
-            socket.setSoTimeout(ContantString.SO_TIMEOUT);
+            socket.setSoTimeout(PhiConstants.SO_TIMEOUT);
             // broadcast content
-            pack = new DatagramPacket(realData.getBytes(), realData.length(), ContantString.broadcastAddress, ContantString.IOT_DEVICE_PORT);
+            pack = new DatagramPacket(realData.getBytes(), realData.length(), PhiConstants.broadcastAddress, PhiConstants.IOT_DEVICE_PORT);
             socket.send(pack);
-            Log.d(TAG, "discoverDevices socket send send port is =" + ContantString.IOT_DEVICE_PORT + " realData=" + realData);
+            Log.d(TAG, "discoverDevices socket send send port is =" + PhiConstants.IOT_DEVICE_PORT + " realData=" + realData);
             long start = System.currentTimeMillis();
             while (true) {
                 Log.d(TAG, "receive data");
@@ -96,9 +96,9 @@ public class UdpDiscoveryUtil implements Runnable {
                 socket.receive(pack);
                 long consume = System.currentTimeMillis() - start;
                 Log.d(TAG, "It is send consume=" + consume);
-                PhiIotDevice mPhiIotDevice = UdpDataParser.parsePackage(pack);
-                if (mPhiIotDevice != null && !responseList.contains(mPhiIotDevice)) {
-                    responseList.add(mPhiIotDevice);
+                BaseDevice mBaseDevice = UdpDataParser.parsePackage(pack);
+                if (mBaseDevice != null && !responseList.contains(mBaseDevice)) {
+                    responseList.add(mBaseDevice);
                 }
             }
         } catch (SocketException e) {

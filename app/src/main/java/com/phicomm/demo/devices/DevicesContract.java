@@ -3,7 +3,7 @@ package com.phicomm.demo.devices;
 import com.phicomm.demo.BasePresenter;
 import com.phicomm.demo.BaseView;
 import com.phicomm.demo.data.Device;
-import com.phicomm.discoverdevice.discoverlibrary.IIotDevice;
+import com.phicomm.iot.library.device.IIotDevice;
 
 import java.util.ArrayList;
 import java.util.List;

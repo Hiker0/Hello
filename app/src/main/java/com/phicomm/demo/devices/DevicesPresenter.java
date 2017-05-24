@@ -6,7 +6,7 @@ import com.phicomm.demo.data.Device;
 import com.phicomm.demo.data.DevicesDataSource.LoadDevicesCallback;
 import com.phicomm.demo.data.DevicesRepository;
 import com.phicomm.demo.devices.DevicesContract.View;
-import com.phicomm.discoverdevice.discoverlibrary.IIotDevice;
+import com.phicomm.iot.library.device.IIotDevice;
 
 import java.util.ArrayList;
 import java.util.List;

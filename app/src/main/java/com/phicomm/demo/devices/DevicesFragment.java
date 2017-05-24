@@ -16,12 +16,12 @@ import android.view.ViewGroup;
 
 import com.phicomm.demo.R;
 import com.phicomm.demo.data.Device;
-import com.phicomm.demo.device.plug.PlugActivity;
 import com.phicomm.demo.device.switcher.SwitcherActivity;
 import com.phicomm.demo.devices.DevicesContract.Presenter;
 import com.phicomm.demo.util.ItemClickSupport;
 import com.phicomm.demo.util.ItemClickSupport.OnItemClickListener;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -101,7 +101,7 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
             case PLUG:
             case SWITCHER: {
                 Intent intent = new Intent(getContext(), SwitcherActivity.class);
-                intent.putExtra("device", device);
+                intent.putExtra("device", (Serializable) device);
                 startActivity(intent);
             }
             break;

@@ -1,28 +1,41 @@
 package com.phicomm.iot.library.device;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
-
-import com.phicomm.iot.library.utils.JsonTool;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 
 /**
  * Created by Johnson on 2017-04-25.
  */
-public class BaseDevice implements Serializable {
+public class BaseDevice implements Serializable,IIotDevice {
     protected String mName;
     protected TYPE mType;
     protected BRAND mBrand;
     protected String mAddress;
     protected String mBssid;
 
+    public static final Creator<BaseDevice> CREATOR = new Creator<BaseDevice>() {
+        @Override
+        public BaseDevice createFromParcel(Parcel in) {
+            return new BaseDevice(in);
+        }
+
+        @Override
+        public BaseDevice[] newArray(int size) {
+            return new BaseDevice[size];
+        }
+    };
+
     public BaseDevice() {
 
+    }
+    protected BaseDevice(Parcel in) {
+        String[] vals = new String[2];
+        in.readStringArray(vals);
+        this.mBssid = vals[0];
+        this.mType = TYPE.getTypeEnumByString(vals[1]);
+        this.mAddress = (String) in.readSerializable();
     }
 
     public BaseDevice(@NonNull BaseDevice device) {
@@ -100,5 +113,20 @@ public class BaseDevice implements Serializable {
                 + " ,mBrand=" + mBrand
                 + " ,mBssid=" + mBssid
                 + "}";
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{
+                mBssid,
+                mType.toString()
+        });
+        dest.writeSerializable(mAddress);
     }
 }

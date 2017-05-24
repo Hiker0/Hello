@@ -1,9 +1,11 @@
-package com.phicomm.discoverdevice.discoverlibrary;
+package com.phicomm.iot.library.discover;
 
 import android.util.Log;
 
-import com.phicomm.discoverdevice.discoverlibrary.JmdnsDiscover.JmdnsDiscoveryUtil;
-import com.phicomm.discoverdevice.discoverlibrary.udpDiscover.UdpDiscoveryUtil;
+import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.device.IIotDevice;
+import com.phicomm.iot.library.discover.JmdnsDiscover.JmdnsDiscoveryUtil;
+import com.phicomm.iot.library.discover.udpDiscover.UdpDiscoveryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +18,7 @@ import java.util.Map;
  */
 
 public class MeshDiscoveryUtil {
-    private List<PhiIotDevice> mFinalDeviceList = new ArrayList<>();
+    private List<BaseDevice> mFinalDeviceList = new ArrayList<>();
     private Map<String, IIotDevice> mCachedIotAddress;
     private UdpDiscoveryUtil mUdpDiscover;
     private JmdnsDiscoveryUtil mJmdnsDiscover;
@@ -37,7 +39,7 @@ public class MeshDiscoveryUtil {
 
     }
 
-    public void notifyDeviceResultAdd(List<PhiIotDevice> devList) {
+    public void notifyDeviceResultAdd(List<BaseDevice> devList) {
         Log.d(TAG, "mDiscoverListeners.size()=" + mDiscoverListeners.size() + "devList.size=" + devList.size());
         for (IDiscoverResultListener listener : mDiscoverListeners) {
             listener.onDeviceResultAdd(devList);
@@ -64,7 +66,7 @@ public class MeshDiscoveryUtil {
             mJmdnsDiscoveryThread = null;
         }
         startUdpDiscovery();
-        if (ContantString.bIsUsingJMDNS) {
+        if (PhiConstants.bIsUsingJMDNS) {
             startJmdnsDiscovery();
         }
     }
@@ -91,9 +93,9 @@ public class MeshDiscoveryUtil {
 
     private IDiscoverResultListener mDiscoverResultListener = new IDiscoverResultListener() {
         @Override
-        public void onDeviceResultAdd(List<PhiIotDevice> resultList) {
-            for (PhiIotDevice dev : resultList) {
-                String mBssid= dev.getBSSID();
+        public void onDeviceResultAdd(List<BaseDevice> resultList) {
+            for (BaseDevice dev : resultList) {
+                String mBssid= dev.getBssid();
                 Log.d(TAG,"dev.mBssid="+mBssid + "mFinalDeviceList.size()="+mFinalDeviceList.size());
                 if(mCachedIotAddress.containsKey(mBssid)){
                     continue;

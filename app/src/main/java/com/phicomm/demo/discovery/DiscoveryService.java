@@ -7,9 +7,9 @@ import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.phicomm.discoverdevice.discoverlibrary.IDiscoverResultListener;
-import com.phicomm.discoverdevice.discoverlibrary.MeshDiscoveryUtil;
-import com.phicomm.discoverdevice.discoverlibrary.PhiIotDevice;
+import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.discover.IDiscoverResultListener;
+import com.phicomm.iot.library.discover.MeshDiscoveryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class DiscoveryService extends IntentService {
 
     private IDiscoverResultListener mMeshDiscoverResultListener = new IDiscoverResultListener() {
         @Override
-        public void onDeviceResultAdd(List<PhiIotDevice> resultList) {
+        public void onDeviceResultAdd(List<BaseDevice> resultList) {
             Log.d(TAG, "Mesh onDeviceResultAdd resultList.size()=" + resultList.size() + "send ACTION_DISCOVERY_RESULT broadcast");
             Intent i = new Intent(ACTION_DISCOVERY_RESULT);
             i.putExtra("resultType", "2222");

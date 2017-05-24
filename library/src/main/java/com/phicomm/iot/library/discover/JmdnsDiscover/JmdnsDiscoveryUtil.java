@@ -1,10 +1,11 @@
-package com.phicomm.discoverdevice.discoverlibrary.JmdnsDiscover;
+package com.phicomm.iot.library.discover.JmdnsDiscover;
 
 import android.util.Log;
 
-import com.phicomm.discoverdevice.discoverlibrary.ContantString;
-import com.phicomm.discoverdevice.discoverlibrary.MeshDiscoveryUtil;
-import com.phicomm.discoverdevice.discoverlibrary.PhiIotDevice;
+import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.device.TYPE;
+import com.phicomm.iot.library.discover.MeshDiscoveryUtil;
+import com.phicomm.iot.library.discover.PhiConstants;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -25,7 +26,7 @@ import static java.lang.Thread.sleep;
 public class JmdnsDiscoveryUtil implements Runnable {
     private static final String TAG = "MdnsDiscoverUtil";
     MeshDiscoveryUtil mMeshUti;
-    List<PhiIotDevice> mPhiIotDeviceList;
+    List<BaseDevice> mBaseDeviceList;
 
     public JmdnsDiscoveryUtil(MeshDiscoveryUtil meshUtil) {
         mMeshUti = meshUtil;
@@ -36,7 +37,7 @@ public class JmdnsDiscoveryUtil implements Runnable {
         discoverJmdnsDevices();
     }
 
-    private PhiIotDevice parseSeviceInfo2SampleIotAddres(javax.jmdns.ServiceInfo serviceInfo) {
+    private BaseDevice parseSeviceInfo2SampleIotAddres(javax.jmdns.ServiceInfo serviceInfo) {
         byte[] textBytes = serviceInfo.getTextBytes();
         Log.d(TAG, "parseSeviceInfo2SampleIotAddres(): textBytes toString: " + new String(textBytes));
         // check whether the serviceInfo is valid
@@ -65,42 +66,43 @@ public class JmdnsDiscoveryUtil implements Runnable {
             }
             index += (1 + textBytes[index]);
         }
-        String bssid = keyValue.get(ContantString.KEY_BSSID);
-        String type = keyValue.get(ContantString.KEY_TYPE);
+        String bssid = keyValue.get(PhiConstants.KEY_BSSID);
+        String type = keyValue.get(PhiConstants.KEY_TYPE);
+        TYPE devicetype= TYPE.getTypeEnumByString(type);
         if (bssid == null || type == null) {
             Log.d(TAG, "parseSeviceInfo2SampleIotAddres(): bssid = null or type = null, return null");
             return null;
         }
-        PhiIotDevice mPhiIotDevice = new PhiIotDevice(bssid, type, inetAddress);
-        return mPhiIotDevice;
+        BaseDevice mBaseDevice = new BaseDevice(devicetype,String.valueOf(inetAddress),bssid);
+        return mBaseDevice;
     }
 
-    private List<PhiIotDevice> parseSeviceInfoArray2mPhiIotDeviceList(javax.jmdns.ServiceInfo[] serviceInfoArray) {
+    private List<BaseDevice> parseSeviceInfoArray2mBaseDeviceList(javax.jmdns.ServiceInfo[] serviceInfoArray) {
         if (serviceInfoArray == null) {
             return Collections.emptyList();
         }
-        List<PhiIotDevice> mPhiIotDeviceList = new ArrayList<PhiIotDevice>();
-        PhiIotDevice mPhiIotDevice = null;
+        List<BaseDevice> mBaseDeviceList = new ArrayList<BaseDevice>();
+        BaseDevice mBaseDevice = null;
         for (javax.jmdns.ServiceInfo serviceInfo : serviceInfoArray) {
-            mPhiIotDevice = parseSeviceInfo2SampleIotAddres(serviceInfo);
-            if (mPhiIotDevice != null && !mPhiIotDeviceList.contains(mPhiIotDevice)) {
-                mPhiIotDeviceList.add(mPhiIotDevice);
+            mBaseDevice = parseSeviceInfo2SampleIotAddres(serviceInfo);
+            if (mBaseDevice != null && !mBaseDeviceList.contains(mBaseDevice)) {
+                mBaseDeviceList.add(mBaseDevice);
             }
         }
-        if (mPhiIotDeviceList.isEmpty()) {
+        if (mBaseDeviceList.isEmpty()) {
             return Collections.emptyList();
         } else {
-            return mPhiIotDeviceList;
+            return mBaseDeviceList;
         }
     }
 
-    private List<PhiIotDevice> discoverJmdnsDevices() {
+    private List<BaseDevice> discoverJmdnsDevices() {
         try {
             final JmDNS mdnsService = JmDNS.create();
             Log.d(TAG, "discoverJmdnsDevices() JmDNS.create() finished");
-            javax.jmdns.ServiceInfo[] serviceInfoArray = mdnsService.list(ContantString.IOT_SERVICE_TYPE_JMDNS, ContantString.LIST_TIMEOUT);
+            javax.jmdns.ServiceInfo[] serviceInfoArray = mdnsService.list(PhiConstants.IOT_SERVICE_TYPE_JMDNS, PhiConstants.LIST_TIMEOUT);
             Log.d(TAG, "serviceInfoArray.size=" + serviceInfoArray.length);
-            mPhiIotDeviceList = parseSeviceInfoArray2mPhiIotDeviceList(serviceInfoArray);
+            mBaseDeviceList = parseSeviceInfoArray2mBaseDeviceList(serviceInfoArray);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -116,7 +118,7 @@ public class JmdnsDiscoveryUtil implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mMeshUti.notifyDeviceResultAdd(mPhiIotDeviceList);
-        return mPhiIotDeviceList;
+        mMeshUti.notifyDeviceResultAdd(mBaseDeviceList);
+        return mBaseDeviceList;
     }
 }

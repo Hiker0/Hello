@@ -16,7 +16,7 @@ import com.phicomm.demo.data.DevicesRepository;
 import com.phicomm.demo.discovery.DiscoveryService;
 import com.phicomm.demo.smartconfig.EsptouchDemoActivity;
 import com.phicomm.demo.util.ActivityUtils;
-import com.phicomm.discoverdevice.discoverlibrary.IIotDevice;
+import com.phicomm.iot.library.device.IIotDevice;
 
 import java.util.ArrayList;
 
