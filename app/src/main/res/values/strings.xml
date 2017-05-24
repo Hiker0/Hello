@@ -3,4 +3,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="deviceconfig">设备配网</string>
+    <string name="tvPasswordTitle">密码: </string>
+    <string name="switchIsSsidHiddenTitle">SSID是否隐藏</string>
+    <string name="spinnerTaskResultCountTitle">任务结果个数</string>
+    <string name="spinnerTaskCountTitle">查找方式</string>
+    <string name="btnConfirmTitle">查找</string>
 </resources>
