@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by chunya02.li on 2017/5/15.
  */
 
-public class MeshDiscoveryUtil {
+public class MeshDiscoveryUtil implements Runnable {
     private List<BaseDevice> mFinalDeviceList = new ArrayList<>();
     private Map<String, IIotDevice> mCachedIotAddress;
     private UdpDiscoveryUtil mUdpDiscover;
@@ -28,6 +28,7 @@ public class MeshDiscoveryUtil {
 
     private Thread mUdpDiscoveryThread;
     private Thread mJmdnsDiscoveryThread;
+    private static boolean bDeviceListChanged =false;
     private static String TAG = "MeshDiscoveryUtil";
 
 
@@ -45,7 +46,7 @@ public class MeshDiscoveryUtil {
             listener.onDeviceResultAdd(devList);
         }
         //return total result to discoverService
-        if (mMeshDiscoverListeners != null) {
+        if (mMeshDiscoverListeners != null && bDeviceListChanged) {
             mMeshDiscoverListeners.onDeviceResultAdd(mFinalDeviceList);
         }
     }
@@ -95,16 +96,26 @@ public class MeshDiscoveryUtil {
         @Override
         public void onDeviceResultAdd(List<BaseDevice> resultList) {
             for (BaseDevice dev : resultList) {
-                String mBssid= dev.getBssid();
-                Log.d(TAG,"dev.mBssid="+mBssid + "mFinalDeviceList.size()="+mFinalDeviceList.size());
-                if(mCachedIotAddress.containsKey(mBssid)){
+                String mBssid = dev.getBssid();
+                Log.d(TAG, "dev.mBssid=" + mBssid + "mFinalDeviceList.size()=" + mFinalDeviceList.size());
+                if (mCachedIotAddress.containsKey(mBssid)) {
+                    bDeviceListChanged = false;
                     continue;
                 } else {
-                    mCachedIotAddress.put(mBssid,dev);
+                    bDeviceListChanged = true;
+                    mCachedIotAddress.put(mBssid, dev);
                     mFinalDeviceList.add(dev);
                 }
             }
         }
     };
 
+    @Override
+    public void run() {
+        try {
+            discoverIOTDevices();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

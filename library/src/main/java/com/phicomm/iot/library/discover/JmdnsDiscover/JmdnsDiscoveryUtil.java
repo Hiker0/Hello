@@ -68,11 +68,11 @@ public class JmdnsDiscoveryUtil implements Runnable {
         }
         String bssid = keyValue.get(PhiConstants.KEY_BSSID);
         String type = keyValue.get(PhiConstants.KEY_TYPE);
-        TYPE devicetype= TYPE.getTypeEnumByString(type);
         if (bssid == null || type == null) {
             Log.d(TAG, "parseSeviceInfo2SampleIotAddres(): bssid = null or type = null, return null");
             return null;
         }
+        TYPE devicetype= TYPE.getTypeEnumByString(type);
         BaseDevice mBaseDevice = new BaseDevice(devicetype,String.valueOf(inetAddress),bssid);
         return mBaseDevice;
     }

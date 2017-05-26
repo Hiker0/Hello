@@ -21,6 +21,7 @@ public class DiscoveryService extends IntentService {
     private static String TAG = "DiscoveryService";
 
     private static Context mContext;
+    Thread mMeshDiscoveryThread;
 
     public DiscoveryService() {
         super("DiscoveryService");
@@ -49,14 +50,12 @@ public class DiscoveryService extends IntentService {
 
     private void handleActionUdpDiscovery() throws Exception {
         // TODO: 17-5-10 add udp discovery
-        MeshDiscoveryUtil mMeshDiscoveryUtil = new MeshDiscoveryUtil();
-        mMeshDiscoveryUtil.setMeshDiscoverResultListener(mMeshDiscoverResultListener);
+        MeshDiscoveryUtil mMeshDiscovery = new MeshDiscoveryUtil();
+        mMeshDiscovery.setMeshDiscoverResultListener(mMeshDiscoverResultListener);
+        mMeshDiscoveryThread = new Thread(mMeshDiscovery, "UdpDiscover");
+        mMeshDiscoveryThread.start();
         Log.d(TAG, "handleActionUdpDiscovery new MeshDiscoveryUtil and start begin");
-        try {
-            mMeshDiscoveryUtil.discoverIOTDevices();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     private IDiscoverResultListener mMeshDiscoverResultListener = new IDiscoverResultListener() {
