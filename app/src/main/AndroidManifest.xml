@@ -35,6 +35,8 @@
         </activity>
         <activity android:name=".device.switcher.SwitcherActivity">
         </activity>
+        <activity android:name=".device.light.LightActivity">
+        </activity>
 
         <activity android:name=".smartconfig.EsptouchDemoActivity">
         </activity>

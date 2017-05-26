@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Johnson on 2017-04-25.
  */
-public class BaseDevice implements Serializable,IIotDevice {
+public class BaseDevice implements IIotDevice {
     protected String mName;
     protected TYPE mType;
     protected BRAND mBrand;

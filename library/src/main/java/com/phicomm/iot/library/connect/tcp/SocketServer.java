@@ -1,4 +1,4 @@
-package com.phicomm.iot.library.connect;
+package com.phicomm.iot.library.connect.tcp;
 
 import android.util.Log;
 

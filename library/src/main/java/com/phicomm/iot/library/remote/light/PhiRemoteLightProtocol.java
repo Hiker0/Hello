@@ -21,6 +21,8 @@ public class PhiRemoteLightProtocol extends PhiRemoteProtocol implements IRemote
             if(info.length > 0){
                 light.setBrightness(info[0], true);
             }
+        }else if(msg.getFlag() == PhiLightMessage.CTR_CHECK_STATUS){
+            reportStatus(light.getBrightness());
         }
     }
 
