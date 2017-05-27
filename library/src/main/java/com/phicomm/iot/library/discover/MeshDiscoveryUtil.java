@@ -28,7 +28,6 @@ public class MeshDiscoveryUtil implements Runnable {
 
     private Thread mUdpDiscoveryThread;
     private Thread mJmdnsDiscoveryThread;
-    private static boolean bDeviceListChanged =false;
     private static String TAG = "MeshDiscoveryUtil";
 
 
@@ -46,7 +45,7 @@ public class MeshDiscoveryUtil implements Runnable {
             listener.onDeviceResultAdd(devList);
         }
         //return total result to discoverService
-        if (mMeshDiscoverListeners != null && bDeviceListChanged) {
+        if (mMeshDiscoverListeners != null) {
             mMeshDiscoverListeners.onDeviceResultAdd(mFinalDeviceList);
         }
     }
@@ -99,10 +98,8 @@ public class MeshDiscoveryUtil implements Runnable {
                 String mBssid = dev.getBssid();
                 Log.d(TAG, "dev.mBssid=" + mBssid + "mFinalDeviceList.size()=" + mFinalDeviceList.size());
                 if (mCachedIotAddress.containsKey(mBssid)) {
-                    bDeviceListChanged = false;
                     continue;
                 } else {
-                    bDeviceListChanged = true;
                     mCachedIotAddress.put(mBssid, dev);
                     mFinalDeviceList.add(dev);
                 }
