@@ -8,14 +8,18 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.phicomm.iot.library.device.BaseDevice;
-import com.phicomm.iot.library.device.IIotDevice;
 import com.phicomm.iot.library.discover.IDiscoverResultListener;
 import com.phicomm.iot.library.discover.MeshDiscoveryUtil;
+import com.phicomm.iot.library.discover.PhiConstants;
 import com.phicomm.iot.library.discover.internetDiscover.ICommandDeviceSynchronizeInternet;
 import com.phicomm.iot.library.discover.internetDiscover.PhiCommandDeviceSynchronizeInternet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static com.phicomm.iot.library.discover.PhiConstants.bIsUserLogin;
 
@@ -45,7 +49,7 @@ public class DiscoveryService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_UDP_DISCOVERY.equals(action)) {
                 try {
-                    handleActionUdpDiscovery(bIsUserLogin,true);
+                    handleActionUdpDiscovery(bIsUserLogin, true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -53,34 +57,50 @@ public class DiscoveryService extends IntentService {
         }
     }
 
-    private void handleActionUdpDiscovery(boolean serverRequired, boolean localRequired ) throws Exception {
+    private void handleActionUdpDiscovery(boolean serverRequired, boolean localRequired) throws Exception {
         // TODO: 17-5-10 add udp discovery
-        if(serverRequired){
-            doCommandSynchronizeInternet();
+        Callable<List<BaseDevice>> taskInternet = null;
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<List<BaseDevice>> futureInternet = null;
+        if (serverRequired) {
+            taskInternet = new Callable<List<BaseDevice>>() {
+                @Override
+                public List<BaseDevice> call() throws Exception {
+                    return doCommandSynchronizeInternet(PhiConstants.UserKey);
+                }
+
+            };
+            futureInternet = executor.submit(taskInternet);
+            SendBroadcastForDiscoveryResult(futureInternet.get());
+            executor.shutdown();
         }
-        if(localRequired) {
+        if (localRequired) {
             MeshDiscoveryUtil mMeshDiscovery = new MeshDiscoveryUtil();
             mMeshDiscovery.setMeshDiscoverResultListener(mMeshDiscoverResultListener);
             mMeshDiscoveryThread = new Thread(mMeshDiscovery, "UdpDiscover");
             mMeshDiscoveryThread.start();
             Log.d(TAG, "handleActionUdpDiscovery new MeshDiscoveryUtil and start begin");
         }
-
     }
 
-    private List<IIotDevice> doCommandSynchronizeInternet() {
+
+    private List<BaseDevice> doCommandSynchronizeInternet(String userkey) {
         ICommandDeviceSynchronizeInternet action = new PhiCommandDeviceSynchronizeInternet();
-        return action.doCommandSynchronizeInternet("userkey");
+        return action.doCommandSynchronizeInternet(userkey);
     }
 
     private IDiscoverResultListener mMeshDiscoverResultListener = new IDiscoverResultListener() {
         @Override
         public void onDeviceResultAdd(List<BaseDevice> resultList) {
             Log.d(TAG, "Mesh onDeviceResultAdd resultList.size()=" + resultList.size() + "send ACTION_DISCOVERY_RESULT broadcast");
-            Intent i = new Intent(ACTION_DISCOVERY_RESULT);
-            i.putExtra("resultType", "2222");
-            i.putParcelableArrayListExtra("result", (ArrayList<? extends Parcelable>) resultList);
-            LocalBroadcastManager.getInstance(mContext).sendBroadcast(i);
+            SendBroadcastForDiscoveryResult(resultList);
         }
     };
+
+    public void SendBroadcastForDiscoveryResult(List<BaseDevice> resultList) {
+        Intent i = new Intent(ACTION_DISCOVERY_RESULT);
+        i.putExtra("resultType", "2222");
+        i.putParcelableArrayListExtra("result", (ArrayList<? extends Parcelable>) resultList);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(i);
+    }
 }

@@ -29,8 +29,10 @@ public class DevicesActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(DiscoveryService.ACTION_DISCOVERY_RESULT)) {
                 ArrayList<IIotDevice> iotAddresses = intent.getParcelableArrayListExtra("result");
-                Log.d(TAG, "iotAddresses.size=" + iotAddresses.size());
-                mPresenter.handleIotAddress(iotAddresses);
+                if(iotAddresses!= null) {
+                    Log.d(TAG, "iotAddresses.size=" + iotAddresses.size());
+                    mPresenter.handleIotAddress(iotAddresses);
+                }
             }
         }
     };

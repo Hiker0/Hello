@@ -1,6 +1,6 @@
 package com.phicomm.iot.library.discover.internetDiscover;
 
-import com.phicomm.iot.library.device.IIotDevice;
+import com.phicomm.iot.library.device.BaseDevice;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,28 +20,28 @@ import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Toke
  * Created by chunya02.li on 2017/5/27.
  */
 
-public class PhiCommandDeviceSynchronizeInternet implements ICommandDeviceSynchronizeInternet {
+public class PhiCommandDeviceSynchronizeInternet implements ICommandDeviceSynchronizeInternet{
 
     protected OkHttpClient mClient;
     private final static String KEY_STATUS = "status";
-    private static String TAG = "lichunya PhiCommandDeviceSynchronizeInternet";
+    private static String TAG = "PhiCommandDeviceSynchronizeInternet";
 
     public PhiCommandDeviceSynchronizeInternet() {
         mClient = new OkHttpClient();
     }
 
     @Override
-    public List<IIotDevice> doCommandSynchronizeInternet(String userKey) {
+    public List<BaseDevice> doCommandSynchronizeInternet(String userKey) {
         JSONObject jsonObjectResult = getJSONObject(userKey);
         return getDeviceList(jsonObjectResult);
     }
 
-    public List<IIotDevice> getDeviceList(JSONObject jsonObjectResult) {
+    public List<BaseDevice> getDeviceList(JSONObject jsonObjectResult) {
         if (jsonObjectResult != null) {
             try {
                 int status = jsonObjectResult.getInt(Status);
                 if (status == 200) {
-                    return (List<IIotDevice>)jsonObjectResult.get(Devices);
+                    return (List<BaseDevice>)jsonObjectResult.get(Devices);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

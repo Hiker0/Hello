@@ -1,6 +1,6 @@
 package com.phicomm.iot.library.discover.internetDiscover;
 
-import com.phicomm.iot.library.device.IIotDevice;
+import com.phicomm.iot.library.device.BaseDevice;
 
 import java.util.List;
 
@@ -18,6 +18,6 @@ public interface ICommandDeviceSynchronizeInternet {
      *
      * @return the group(which contains device list) list of the user
      */
-    List<IIotDevice> doCommandSynchronizeInternet(String userKey);
+    List<BaseDevice> doCommandSynchronizeInternet(String userKey);
 }
 

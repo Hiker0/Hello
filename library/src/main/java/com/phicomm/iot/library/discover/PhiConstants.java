@@ -34,6 +34,7 @@ public class PhiConstants {
     public static final String IOT_SERVICE_TYPE_JMDNS = "_http._tcp.local.";
     public static final boolean bIsUsingJMDNS = true;
     public static final boolean bIsUserLogin = true;
+    public static final String UserKey = "ca52829f37466da790e2a5b11f4e79cfac395646";
     public static InetAddress broadcastAddress;
 
     static {
