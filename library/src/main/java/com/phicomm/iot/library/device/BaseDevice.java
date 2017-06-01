@@ -3,8 +3,6 @@ package com.phicomm.iot.library.device;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 
-import java.io.Serializable;
-
 /**
  * Created by Johnson on 2017-04-25.
  */
@@ -14,6 +12,8 @@ public class BaseDevice implements IIotDevice {
     protected BRAND mBrand;
     protected String mAddress;
     protected String mBssid;
+    protected String mToken;
+    protected boolean bIsLocalAddress;
 
     public static final Creator<BaseDevice> CREATOR = new Creator<BaseDevice>() {
         @Override
@@ -43,18 +43,21 @@ public class BaseDevice implements IIotDevice {
         mType = device.getType();
         mBrand = device.getBrand();
         mBssid = device.getBssid();
+        bIsLocalAddress =device.getIsLocalAddress();
+        mToken = device.getToken();
     }
 
-    public BaseDevice(@NonNull TYPE type, @NonNull String addr, @NonNull String bssid) {
-        this(type, addr, bssid, BRAND.PHICOMM);
+    public BaseDevice(@NonNull TYPE type, String addr, @NonNull String bssid) {
+        this(type, addr, bssid, BRAND.PHICOMM,true);
     }
 
-    public BaseDevice(@NonNull TYPE type, @NonNull String addr, @NonNull String bssid, @NonNull BRAND brand) {
+    public BaseDevice(@NonNull TYPE type, String addr, @NonNull String bssid, @NonNull BRAND brand, @NonNull boolean IsLocalAddress) {
         mAddress = addr;
         mType = type;
         mBrand = brand;
         mBssid = bssid;
         mName = "phicomm";
+        bIsLocalAddress = IsLocalAddress;
     }
 
     public String getName() {
@@ -103,7 +106,20 @@ public class BaseDevice implements IIotDevice {
 
     public void setBrandName(String brand) {
         this.mBrand = BRAND.valueOf(brand);
-        ;
+    }
+
+    public void setIsLocalAddress(boolean bIsLocalAddress) {
+        this.bIsLocalAddress = bIsLocalAddress;
+    }
+    public boolean getIsLocalAddress() {
+        return bIsLocalAddress;
+    }
+
+    public void setToken(String token) {
+        this.mToken = token;
+    }
+    public String getToken() {
+        return mToken;
     }
 
     @Override

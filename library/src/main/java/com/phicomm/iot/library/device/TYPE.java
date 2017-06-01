@@ -118,4 +118,55 @@ public enum TYPE {
         return UNKOWW;
     }
 
+    /**
+     * Get EspDeviceType by its serial
+     *
+     * @param serial the serial of the device type defined by Server
+     * @return the EspDeviceType
+     */
+    public static TYPE getEspTypeEnumBySerial(int serial)
+    {
+        if (serial == NEW.getSerial())
+        {
+            return NEW;
+        }
+        else if (serial == PLUG.getSerial())
+        {
+            return PLUG;
+        }
+        else if (serial == LIGHT.getSerial())
+        {
+            return LIGHT;
+        }
+        else if (serial == HUMITURE.getSerial())
+        {
+            return HUMITURE;
+        }
+        else if (serial == FLAMMABLE.getSerial())
+        {
+            return FLAMMABLE;
+        }
+        else if (serial == VOLTAGE.getSerial())
+        {
+            return VOLTAGE;
+        }
+        else if (serial == REMOTE.getSerial())
+        {
+            return REMOTE;
+        }
+        else if (serial == ROOT.getSerial())
+        {
+            return ROOT;
+        }
+        else if (serial == PLUGS.getSerial())
+        {
+            return PLUGS;
+        }
+        else if (serial == SOUNDBOX.getSerial())
+        {
+            return SOUNDBOX;
+        }
+        return null;
+    }
+
 }
