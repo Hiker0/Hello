@@ -13,6 +13,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,6 +22,7 @@ import okhttp3.Response;
 
 import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Authorization;
 import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Bssid;
+import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Key;
 import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Ptype;
 import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Status;
 import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Token;
@@ -31,11 +34,12 @@ import static com.phicomm.iot.library.discover.internetDiscover.IPhiCommand.Toke
 public class PhiCommandDeviceSynchronizeInternet implements ICommandDeviceSynchronizeInternet{
 
     protected OkHttpClient mClient;
-    private final static String KEY_STATUS = "status";
     private static String TAG = "PhiCommandDeviceSynchronizeInternet";
     ArrayList<IIotDevice> mInternetDeviceList = new ArrayList<>();
+    private Map<String, IIotDevice> mInternetIotAddress;
 
     public PhiCommandDeviceSynchronizeInternet() {
+        mInternetIotAddress = new HashMap<>(0);
         mClient = new OkHttpClient();
     }
 
@@ -66,11 +70,16 @@ public class PhiCommandDeviceSynchronizeInternet implements ICommandDeviceSynchr
                         Log.d(TAG, "deviceJsonObject=" + deviceJsonObject.toString());
                         mTypeSerial = deviceJsonObject.getInt(Ptype);
                         mBssid = deviceJsonObject.getString(Bssid);
-                        JSONObject keyObject = (JSONObject) deviceJsonObject.get("key");
-                        mToken = keyObject.getString("token");
+                        JSONObject keyObject = (JSONObject) deviceJsonObject.get(Key);
+                        mToken = keyObject.getString(Token);
                         TYPE type = TYPE.getTypeEnumBySerial(mTypeSerial);
                         mBaseDevice = new BaseDevice(type, "", mBssid, BRAND.PHICOMM, false);
-                        mInternetDeviceList.add(mBaseDevice);
+                        if (mInternetIotAddress.containsKey(mBssid)) {
+                            continue;
+                        } else {
+                            mInternetIotAddress.put(mBssid, mBaseDevice);
+                            mInternetDeviceList.add(mBaseDevice);
+                        }
                     }
                     return mInternetDeviceList;
                 }
@@ -113,9 +122,9 @@ public class PhiCommandDeviceSynchronizeInternet implements ICommandDeviceSynchr
         }
         try {
             resultJson = new JSONObject(strBody);
-            if (!resultJson.has(KEY_STATUS))
+            if (!resultJson.has(Status))
             {
-                resultJson.put(KEY_STATUS, statusCode);
+                resultJson.put(Status, statusCode);
             }
         } catch (JSONException e) {
             e.printStackTrace();

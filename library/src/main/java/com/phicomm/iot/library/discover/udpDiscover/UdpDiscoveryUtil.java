@@ -3,6 +3,7 @@ package com.phicomm.iot.library.discover.udpDiscover;
 import android.util.Log;
 
 import com.phicomm.iot.library.device.BaseDevice;
+import com.phicomm.iot.library.device.IIotDevice;
 import com.phicomm.iot.library.discover.MeshDiscoveryUtil;
 import com.phicomm.iot.library.discover.PhiConstants;
 
@@ -12,7 +13,9 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -24,10 +27,13 @@ public class UdpDiscoveryUtil implements Runnable {
     private static final String TAG = "UdpDiscoveryUtil";
     List<BaseDevice> responseList = new ArrayList<BaseDevice>();
     MeshDiscoveryUtil mMeshUti;
+    private Map<String, IIotDevice> mUdpLocalIotAddress;
 
     public UdpDiscoveryUtil(MeshDiscoveryUtil meshUtil) {
         mMeshUti = meshUtil;
+        mUdpLocalIotAddress = new HashMap<>();
     }
+
 
     @Override
     public void run() {
@@ -97,8 +103,10 @@ public class UdpDiscoveryUtil implements Runnable {
                 long consume = System.currentTimeMillis() - start;
                 Log.d(TAG, "It is send consume=" + consume);
                 BaseDevice mBaseDevice = UdpDataParser.parsePackage(pack);
-                if (mBaseDevice != null && !responseList.contains(mBaseDevice)) {
+                if (mBaseDevice != null && !mUdpLocalIotAddress.containsKey(mBaseDevice.getBssid())) {
+                    mUdpLocalIotAddress.put(mBaseDevice.getBssid(),mBaseDevice);
                     responseList.add(mBaseDevice);
+                    mMeshUti.notifyDeviceResultAdd(responseList);
                 }
             }
         } catch (SocketException e) {
@@ -119,7 +127,6 @@ public class UdpDiscoveryUtil implements Runnable {
             }
         }
         Log.d(TAG, "responseList.size()=" + responseList.size());
-        mMeshUti.notifyDeviceResultAdd(responseList);
         return responseList;
     }
 }

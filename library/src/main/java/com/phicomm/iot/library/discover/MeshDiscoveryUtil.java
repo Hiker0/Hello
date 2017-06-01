@@ -69,41 +69,9 @@ public class MeshDiscoveryUtil implements Runnable {
         if (PhiConstants.bIsUsingJMDNS) {
             startJmdnsDiscovery();
         }
-        /*if(PhiConstants.bIsUserLogin) {
-            startSynchronizeInternet();
-        }*/
     }
 
-    /* public void startSynchronizeInternet() {
-        Callable<List<BaseDevice>> taskInternet = null;
-        ExecutorService executor = Executors.newCachedThreadPool();
-        Future<List<BaseDevice>> futureInternet = null;
-        addDiscoveryListener(mDiscoverResultListener);
-        if (PhiConstants.bIsUserLogin) {
-            taskInternet = new Callable<List<BaseDevice>>() {
-                @Override
-                public List<BaseDevice> call() throws Exception {
-                    return doCommandSynchronizeInternet(PhiConstants.UserKey);
-                }
 
-            };
-            futureInternet = executor.submit(taskInternet);
-            try {
-                notifyDeviceResultAdd(futureInternet.get());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            executor.shutdown();
-        }
-    }
-
-      private List<BaseDevice> doCommandSynchronizeInternet(String userkey) {
-           ICommandDeviceSynchronizeInternet action = new PhiCommandDeviceSynchronizeInternet();
-           return action.doCommandSynchronizeInternet(userkey);
-       }
-   */
     private void startUdpDiscovery() throws Exception {
         addDiscoveryListener(mDiscoverResultListener);
         mUdpDiscoveryThread = new Thread(mUdpDiscover, "UdpDiscover");
@@ -147,5 +115,9 @@ public class MeshDiscoveryUtil implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<BaseDevice> getFinalDeviceList() {
+        return mFinalDeviceList;
     }
 }
