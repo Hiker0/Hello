@@ -31,11 +31,12 @@ public class EspClient implements IProtocol {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     protected EspClient(String host) {
-        this(host, 80);
+        mHost = host;
+        mClient = new OkHttpClient();
     }
 
-    protected EspClient(String host, int port) {
-        mHost = host;
+    protected EspClient(String addr, int port) {
+        mHost = "http://"+addr;
         mPort = port;
         mClient = new OkHttpClient();
     }

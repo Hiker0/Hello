@@ -19,9 +19,9 @@ public class EspSwitcherService extends EspClient implements SwitchInterface.ISw
     SwitchInterface.IListener mListener;
 
 
-    EspSwitcherService(String host, SwitchInterface.IListener listener) {
-        super(host);
-        ipAddress = host;
+    EspSwitcherService(String addr, SwitchInterface.IListener listener) {
+        super(addr, 80);
+        ipAddress = addr;
         mListener = listener;
     }
 

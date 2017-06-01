@@ -115,6 +115,7 @@ public class LightActivity extends Activity {
 
         infoView.setText(host.toString());
         remoteLight = new RomateLight(host);
+        remoteLight.setToken("");
         remoteLight.open();
         remoteLight.setListener(new RomateLight.RemoteLightListener() {
 

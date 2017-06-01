@@ -2,26 +2,31 @@ package com.phicomm.iot.library.remote.switcher;
 
 import com.phicomm.iot.library.device.BaseDevice;
 import com.phicomm.iot.library.device.SmartDevice;
+import com.phicomm.iot.library.remote.RemoteDevice;
 
 /**
  * Created by allen.z on 2017-05-05.
  */
-public class RomateSwitcher extends SmartDevice implements RemoteSwitcherInterface.ISwitcher {
+public class RomateSwitcher extends RemoteDevice implements RemoteSwitcherInterface.ISwitcher {
     RemoteSwitcherInterface.IReporter switcherProtocol;
     RemoteSwitchListener mListener;
+    EspSwitcherNetConnet mNetConnect;
     boolean isOn;
-    public RomateSwitcher(BaseDevice dev) {
-        super(dev);
+    public RomateSwitcher(BaseDevice dev, String token) {
+        super(dev, token);
         switcherProtocol = new EspRemoteSwitcher(this,this);
+        mNetConnect = new EspSwitcherNetConnet(this,this);
     }
 
 
     public void open() {
         switcherProtocol.start();
+        mNetConnect.start();
     }
 
     public void close() {
         switcherProtocol.stop();
+        mNetConnect.stop();
     }
 
     @Override
@@ -30,12 +35,13 @@ public class RomateSwitcher extends SmartDevice implements RemoteSwitcherInterfa
         if (mListener != null) {
             mListener.turnOn();
         }
-        switcherProtocol.reportStatus(true);
+        reportStatus(true);
     }
 
     public void reportStatus(boolean on){
         isOn = on;
         switcherProtocol.reportStatus(on);
+        mNetConnect.reportStatus(on);
     }
 
     @Override
@@ -45,7 +51,7 @@ public class RomateSwitcher extends SmartDevice implements RemoteSwitcherInterfa
             mListener.turnOff();
         }
 
-        switcherProtocol.reportStatus(false);
+        reportStatus(false);
     }
 
     @Override

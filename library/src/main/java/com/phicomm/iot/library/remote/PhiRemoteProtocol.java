@@ -30,7 +30,7 @@ public abstract class PhiRemoteProtocol implements IProtocol {
 
     int mState = STATE_CLOSED;
 
-    private SmartDevice mDevice;
+    private RemoteDevice mDevice;
     private DatagramSender mSender;
     private DatagramSocketServer mServer;
     private ServerHandler mServerHandler;
@@ -38,7 +38,7 @@ public abstract class PhiRemoteProtocol implements IProtocol {
     String hostAddr ;
     int  hostPort ;
 
-    protected PhiRemoteProtocol(SmartDevice device) {
+    protected PhiRemoteProtocol(RemoteDevice device) {
         mDevice = device;
         mServerHandler = new ServerHandler();
         mState = STATE_INITED;

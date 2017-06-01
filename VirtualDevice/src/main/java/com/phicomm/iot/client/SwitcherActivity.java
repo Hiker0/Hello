@@ -76,7 +76,7 @@ public class SwitcherActivity extends Activity {
     }
 
     void regester() {
-        DiscoveredDevice host = new DiscoveredDevice("PHICOMM", TYPE.SWITCHER, Build.DEVICE, "18:fe:34:9a:b1:4c");
+        DiscoveredDevice host = new DiscoveredDevice("PHICOMM", TYPE.SWITCHER, Build.DEVICE, "12:f3:34:95:b6:47");
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         if (!wifiManager.isWifiEnabled()) {
@@ -105,7 +105,7 @@ public class SwitcherActivity extends Activity {
         }
 
         infoView.setText(host.toString());
-        remoteSwitcher = new RomateSwitcher(host);
+        remoteSwitcher = new RomateSwitcher(host, "c533f851581669987818b9523b5f93be0a010e6a");
         remoteSwitcher.open();
         remoteSwitcher.setListener(new RomateSwitcher.RemoteSwitchListener() {
             @Override
