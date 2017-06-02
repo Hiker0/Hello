@@ -46,6 +46,7 @@ public class PhiCommandDeviceSynchronizeInternet implements ICommandDeviceSynchr
     @Override
     public ArrayList<IIotDevice> doCommandSynchronizeInternet(String userKey) {
         mInternetDeviceList.clear();
+        mInternetIotAddress.clear();
         JSONObject jsonObjectResult = getJSONObject(userKey);
         return getDeviceList(jsonObjectResult);
     }
@@ -74,6 +75,7 @@ public class PhiCommandDeviceSynchronizeInternet implements ICommandDeviceSynchr
                         mToken = keyObject.getString(Token);
                         TYPE type = TYPE.getTypeEnumBySerial(mTypeSerial);
                         mBaseDevice = new BaseDevice(type, "", mBssid, BRAND.PHICOMM, false);
+                        mBaseDevice.setToken(mToken);
                         if (mInternetIotAddress.containsKey(mBssid)) {
                             continue;
                         } else {
