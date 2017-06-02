@@ -68,25 +68,34 @@ public class BaseDevice implements IIotDevice {
         mName = name;
     }
 
+    @Override
     public String getAddress() {
         return mAddress;
+    }
+
+    @Override
+    public TYPE getType() {
+        return mType;
+    }
+
+    @Override
+    public String getToken() {
+        return mToken;
+    }
+
+    @Override
+    public String getBssid() {
+        return mBssid;
     }
 
     public void setAddress(String address) {
         this.mAddress = address;
     }
 
-    public String getBssid() {
-        return mBssid;
-    }
-
     public void setBssid(String bssid) {
         this.mBssid = bssid;
     }
 
-    public TYPE getType() {
-        return mType;
-    }
 
     public void setType(TYPE type) {
         this.mType = type;
@@ -118,9 +127,7 @@ public class BaseDevice implements IIotDevice {
     public void setToken(String token) {
         this.mToken = token;
     }
-    public String getToken() {
-        return mToken;
-    }
+
 
     @Override
     public String toString() {

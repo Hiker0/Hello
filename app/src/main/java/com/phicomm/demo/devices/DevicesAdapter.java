@@ -2,6 +2,7 @@ package com.phicomm.demo.devices;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,12 @@ public class DevicesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             mTvBssid.setText(device.getBssid());
             mTvType.setText(device.getType().name());
-            mTvLocal.setText(device.getAddress());
+            String localStr = device.getAddress();
+            if(localStr == null || localStr.isEmpty()){
+                localStr = device.getToken();
+            }
+            Log.d("lichunya","device.getToken()="+device.getToken());
+            mTvLocal.setText(localStr);
         }
     }
 }

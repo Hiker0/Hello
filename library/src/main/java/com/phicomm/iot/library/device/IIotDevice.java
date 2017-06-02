@@ -12,4 +12,6 @@ public interface IIotDevice extends Parcelable {
     TYPE getType();
 
     String getAddress();
+
+    String getToken();
 }

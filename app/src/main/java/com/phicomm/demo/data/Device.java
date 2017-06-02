@@ -15,6 +15,7 @@ public class Device extends BaseDevice {
         device.setTypeName(address.getType().toString());
         device.setBssid(address.getBssid());
         device.setAddress(address.getAddress());
+        device.setToken(address.getToken());
         return device;
     }
 }
