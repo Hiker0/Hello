@@ -6,6 +6,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.phicomm.iot.library.connect.tcp.SocketClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Author: allen.z
  * Date  : 2017-05-27
@@ -16,7 +19,7 @@ public class EspNetConnect implements SocketClient.Listener{
     public final static  String TAG ="EspNetConnect";
     final static  String HOST ="iot.espressif.cn";
     final static  int PORT = 8000;
-    final static  long PING_MS = 8000;
+    final static  long PING_MS = 20000;
 
     SocketClient mClient;
     String mToken;
@@ -89,6 +92,5 @@ public class EspNetConnect implements SocketClient.Listener{
         mHandler.removeCallbacks(pingRunnable);
         mClient.disconnect();
     }
-
 
 }

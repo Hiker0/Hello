@@ -1,8 +1,11 @@
 package com.phicomm.iot.library.remote.switcher;
 
+import android.renderscript.Element;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.phicomm.iot.library.device.SmartDevice;
 import com.phicomm.iot.library.remote.EspBeans;
 import com.phicomm.iot.library.remote.EspNetConnect;
@@ -36,8 +39,20 @@ public class EspSwitcherNetConnet extends RemoteDevice implements RemoteSwitcher
     }
 
     void handlePost(JSONObject jsonObject){
-        Log.d(TAG, "handleGet");
+        Log.d(TAG, "handlePost");
+        boolean deliver = false;
+        int nonce = 0;
+        try {
+            deliver = jsonObject.getBoolean("deliver_to_device");
+            if(deliver) {
+                nonce = jsonObject.getInt("nonce");
+                mNetConnet.replyPost(nonce);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public void start() {
@@ -54,9 +69,9 @@ public class EspSwitcherNetConnet extends RemoteDevice implements RemoteSwitcher
     @Override
     public void reportStatus(boolean on) {
         Log.d(TAG,"reportStatus");
-        DataType dataType = new DataType();
+        EspBeans.DataPoints<DatapointsBean> dataType = new EspBeans.DataPoints<DatapointsBean>();
         int status = on? 1: 0;
-        dataType.addDatapoints(new DataType.DatapointsBean(status));
+        dataType.addDatapoints(new DatapointsBean(status));
         mNetConnet.pushDatapoint("plug-status",dataType);
     }
 
@@ -83,34 +98,32 @@ public class EspSwitcherNetConnet extends RemoteDevice implements RemoteSwitcher
         }
 
 
-        public void pushDatapoint(String stream, DataType dataJson){
+        public void pushDatapoint(String stream, EspBeans.DataPoints<DatapointsBean> dataJson){
             Log.d(TAG, "pushDatapoint>>dataJson");
-            EspBeans.DataPoint dp = new EspBeans.DataPoint<DataType>(getToken(), stream, dataJson);
+            String path = "/v1/datastreams/"+stream+"/datapoints/";
+            EspBeans.PostMethod dp = new EspBeans.PostMethod<EspBeans.DataPoints<DatapointsBean>>(getToken(), path, dataJson);
             String json = mGson.toJson(dp);
             send(json);
         }
+
+        public void replyPost(int nonce){
+
+            EspBeans.DataPoints<DatapointsBean> dataType = new EspBeans.DataPoints<DatapointsBean>();
+            int status = mSwitcher.isOn()? 1: 0;
+            dataType.addDatapoints(new DatapointsBean(status));
+            EspBeans.PostReply reply = new EspBeans.PostReply<DatapointsBean>(200,nonce,true,dataType);
+            String json = mGson.toJson(reply);
+            send(json);
+        }
     }
+    public static class DatapointsBean {
+        /**
+         * x : 1
+         */
 
-    static class DataType {
-        private List<DatapointsBean> datapoints;
-
-        DataType(){
-            datapoints = new ArrayList<DatapointsBean>();
-        }
-
-        public void addDatapoints(DatapointsBean datapoint) {
-            datapoints.add(datapoint);
-        }
-
-        public static class DatapointsBean {
-            /**
-             * x : 1
-             */
-
-            private int x;
-            DatapointsBean(int status){
-                x = status;
-            }
+        private int x;
+        DatapointsBean(int status){
+            x = status;
         }
     }
 
