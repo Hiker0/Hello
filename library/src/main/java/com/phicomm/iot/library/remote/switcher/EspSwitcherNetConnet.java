@@ -47,6 +47,14 @@ public class EspSwitcherNetConnet extends RemoteDevice implements RemoteSwitcher
             if(deliver) {
                 nonce = jsonObject.getInt("nonce");
                 mNetConnet.replyPost(nonce);
+                JSONObject body = jsonObject.getJSONObject("body");
+                JSONObject datapoint = body.getJSONObject("datapoint");
+                int status = datapoint.getInt("x");
+                if(status == 1){
+                    mSwitcher.turnOn();
+                }else{
+                    mSwitcher.turnOff();
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -116,11 +124,11 @@ public class EspSwitcherNetConnet extends RemoteDevice implements RemoteSwitcher
             send(json);
         }
     }
+
     public static class DatapointsBean {
         /**
          * x : 1
          */
-
         private int x;
         DatapointsBean(int status){
             x = status;
