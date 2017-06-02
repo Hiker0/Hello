@@ -71,6 +71,7 @@ public class MeshDiscoveryUtil implements Runnable {
         }
     }
 
+
     private void startUdpDiscovery() throws Exception {
         addDiscoveryListener(mDiscoverResultListener);
         mUdpDiscoveryThread = new Thread(mUdpDiscover, "UdpDiscover");
@@ -114,5 +115,9 @@ public class MeshDiscoveryUtil implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<BaseDevice> getFinalDeviceList() {
+        return mFinalDeviceList;
     }
 }

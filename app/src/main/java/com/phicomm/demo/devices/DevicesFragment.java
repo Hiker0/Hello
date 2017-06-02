@@ -22,7 +22,6 @@ import com.phicomm.demo.devices.DevicesContract.Presenter;
 import com.phicomm.demo.util.ItemClickSupport;
 import com.phicomm.demo.util.ItemClickSupport.OnItemClickListener;
 
-import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -80,7 +79,6 @@ public class DevicesFragment extends Fragment implements DevicesContract.View {
     @Override
     public void onResume() {
         super.onResume();
-
         mPresenter.start();
     }
 
