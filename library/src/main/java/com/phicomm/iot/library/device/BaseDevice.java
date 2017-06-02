@@ -31,10 +31,11 @@ public class BaseDevice implements IIotDevice {
 
     }
     protected BaseDevice(Parcel in) {
-        String[] vals = new String[2];
+        String[] vals = new String[3];
         in.readStringArray(vals);
         this.mBssid = vals[0];
         this.mType = TYPE.getTypeEnumByString(vals[1]);
+        this.mToken = vals[2];
         this.mAddress = (String) in.readSerializable();
     }
 
@@ -148,7 +149,8 @@ public class BaseDevice implements IIotDevice {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[]{
                 mBssid,
-                mType.toString()
+                mType.toString(),
+                mToken
         });
         dest.writeSerializable(mAddress);
     }
