@@ -16,11 +16,13 @@ public class SmartSwitcher extends SmartDevice implements SwitchInterface.IListe
 
     public SmartSwitcher(BaseDevice device) {
         super(device);
-//        if(device.getBrand().equals("phicomm")) {
-        switcherProtocol = new EspSwitcherService(getAddress(), this);
-//        }
-        mHandler = new Handler();
 
+        if(device.getIsLocalAddress()) {
+            switcherProtocol = new EspSwitcherService(getAddress(), this);
+        }else{
+            switcherProtocol  = new EspSwitcherNetService(getToken(), this);
+        }
+        mHandler = new Handler();
     }
 
     void runOnMainThread(Runnable runnable) {
@@ -28,11 +30,12 @@ public class SmartSwitcher extends SmartDevice implements SwitchInterface.IListe
     }
 
     public void open() {
+        switcherProtocol.start();
         qureyStatus();
     }
 
     public void close() {
-
+        switcherProtocol.stop();
     }
 
     private void refresh(){

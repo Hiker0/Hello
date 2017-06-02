@@ -2,6 +2,7 @@ package com.phicomm.iot.library.remote;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,7 +62,33 @@ public class EspBeans {
         }
     }
 
-    public static  class DataPoint<T>{
+    public static class DataPoints<T> {
+        private List<T> datapoints;
+
+        public DataPoints(){
+            datapoints = new ArrayList<T>();
+        }
+
+        public void addDatapoints(T datapoint) {
+            datapoints.add(datapoint);
+        }
+
+    }
+
+    public static class PostReply<T> {
+        private int status;
+        private DataPoints<T> datapoint;
+        private int nonce;
+        private boolean deliver_to_device;
+        public PostReply(int status, int nonce, boolean deliver, DataPoints<T> datapoint){
+            this.status = status;
+            this.nonce = nonce;
+            this.deliver_to_device = deliver;
+            this.datapoint = datapoint;
+        }
+    }
+
+    public static  class PostMethod<T>{
 
         /**
          * path : /v1/datastreams/:stream_name/datapoints/
@@ -75,9 +102,9 @@ public class EspBeans {
         private MetaBean meta;
         private T body;
 
-        public DataPoint(String token, String streamName, T body){
+        public PostMethod(String token,String path, T body){
             method = "POST";
-            path = "/v1/datastreams/"+streamName+"/datapoints/";
+            this.path = path;;
             meta = new MetaBean(token);
             this.body = body;
         }
