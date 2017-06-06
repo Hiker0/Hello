@@ -9,13 +9,18 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.phicomm.demo.DemoApp;
 import com.phicomm.demo.R;
 import com.phicomm.demo.data.DevicesRepository;
 import com.phicomm.demo.discovery.DiscoveryService;
 import com.phicomm.demo.smartconfig.EsptouchDemoActivity;
+import com.phicomm.demo.user.LoginActivity;
 import com.phicomm.demo.util.ActivityUtils;
 import com.phicomm.iot.library.device.IIotDevice;
 import com.phicomm.iot.library.discover.PhiConstants;
@@ -29,9 +34,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class DevicesActivity extends AppCompatActivity {
     private static String TAG = "DevicesActivity";
     private static final int MENU_OPTION_DEVICE_CONFIG = 1;
+    @BindView(R.id.layout_devices_login1)
+    LinearLayout mLayoutLogin1;
+    @BindView(R.id.layout_devices_login2)
+    LinearLayout mLayoutLogin2;
+    @BindView(R.id.tv_login_msg)
+    TextView mTextLoginMsg;
     private DevicesPresenter mPresenter;
     private RadioGroup mDeviceGroup;
     private RadioButton mInternetDevices;
@@ -56,6 +71,8 @@ public class DevicesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devices);
+        ButterKnife.bind(this);
+
         DevicesFragment devicesFragment = (DevicesFragment) getSupportFragmentManager().findFragmentById(R.id.layout_devices_container);
         if (devicesFragment == null) {
             devicesFragment = DevicesFragment.newInstance();
@@ -96,6 +113,7 @@ public class DevicesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        loadLoginPanel();
         if (R.id.localDevice == mDeviceGroup.getCheckedRadioButtonId()) {
             DiscoveryService.startActionUdpDiscovery(this);
         } else if (R.id.internetDevice == mDeviceGroup.getCheckedRadioButtonId()) {
@@ -166,5 +184,32 @@ public class DevicesActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
         DiscoveryService.stopActionUdpDiscovery(this);
         super.onDestroy();
+    }
+
+    @OnClick(R.id.bt_login_logout)
+    public void clickLogout() {
+        ((DemoApp) getApplication()).store().setIotToken("");
+        loadLoginPanel();
+    }
+
+    @OnClick(R.id.bt_login_login)
+    public void clickLogin() {
+        LoginActivity.start(this);
+    }
+
+    private void loadLoginPanel() {
+        if (((DemoApp) getApplication()).store().getIotToken().isEmpty()) {
+            mLayoutLogin1.setVisibility(View.VISIBLE);
+            mLayoutLogin2.setVisibility(View.GONE);
+        } else {
+            mLayoutLogin1.setVisibility(View.GONE);
+            mLayoutLogin2.setVisibility(View.VISIBLE);
+            mTextLoginMsg.setText("登陆成功. token: " + ((DemoApp) getApplication()).store().getIotToken());
+        }
+    }
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, DevicesActivity.class);
+        context.startActivity(starter);
     }
 }

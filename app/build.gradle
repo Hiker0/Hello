@@ -33,4 +33,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile project(path: ':library')
     compile project(path: ':smartconfig')
+    compile 'com.android.volley:volley:1.0.0'
 }
