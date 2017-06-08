@@ -27,15 +27,11 @@ import com.phicomm.demo.smartconfig.EsptouchDemoActivity;
 import com.phicomm.demo.user.LoginActivity;
 import com.phicomm.demo.util.ActivityUtils;
 import com.phicomm.iot.library.device.IIotDevice;
-import com.phicomm.iot.library.discover.internetDiscover.ICommandDeviceSynchronizeInternet;
-import com.phicomm.iot.library.discover.internetDiscover.PhiCommandDeviceSynchronizeInternet;
+import com.phicomm.iot.library.discover.internetDiscover.InternetDevicesDiscovery;
+import com.phicomm.iot.library.discover.internetDiscover.InternetDevicesDiscovery.IInternetDiscoverResultListener;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,8 +53,8 @@ public class DevicesActivity extends AppCompatActivity {
     private RadioButton mLocalDevices;
     private Button mRefreshButton;
     private ArrayList<IIotDevice> mLocalList = new ArrayList<>();
-    private ArrayList<IIotDevice> mInternetList;
-    private ICommandDeviceSynchronizeInternet mSynchronizeAction = null;
+    private ArrayList<IIotDevice> mInternetList = new ArrayList<>();
+    private InternetDevicesDiscovery mInternetDiscoveryInstance =null;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -123,10 +119,10 @@ public class DevicesActivity extends AppCompatActivity {
     RadioGroup.OnCheckedChangeListener mDevicelistener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup Group, int Checkid) {
-             //refreshDeviceList();
+            //refreshDeviceList();
             if (R.id.internetDevice == Checkid) {
-                if (mSynchronizeAction != null && mSynchronizeAction.getInternetDeviceList() != null) {
-                    mPresenter.handleIotAddress((ArrayList<IIotDevice>) mSynchronizeAction.getInternetDeviceList());
+                if (mInternetList != null && mInternetDiscoveryInstance != null) {
+                    mPresenter.handleIotAddress(mInternetList);
                 } else {
                     startActionInternetDiscovery();
                 }
@@ -171,33 +167,19 @@ public class DevicesActivity extends AppCompatActivity {
 
     // This is for the internet Discovery
     private void startActionInternetDiscovery() {
-        Callable<ArrayList<IIotDevice>> taskInternet = null;
-        ExecutorService executor = Executors.newCachedThreadPool();
-        Future<ArrayList<IIotDevice>> futureInternet = null;
-        taskInternet = new Callable<ArrayList<IIotDevice>>() {
-            @Override
-            public ArrayList<IIotDevice> call() throws Exception {
-                return doCommandSynchronizeInternet(getLoginOnToken());
-            }
-        };
-        futureInternet = executor.submit(taskInternet);
-        try {
-            mInternetList = futureInternet.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        if (mInternetList != null) {
-            mPresenter.handleIotAddress(mInternetList);
-        }
-        executor.shutdown();
+        mInternetList.clear();
+        mInternetDiscoveryInstance = InternetDevicesDiscovery.getInstance();
+        mInternetDiscoveryInstance.setInternetDiscoverResultListener(mInternetDiscoverResultListener);
+        mInternetDiscoveryInstance.startInternetDiscovery(getLoginOnToken());
     }
 
-    private ArrayList<IIotDevice> doCommandSynchronizeInternet(String userKey) {
-        mSynchronizeAction = new PhiCommandDeviceSynchronizeInternet();
-        return mSynchronizeAction.doCommandSynchronizeInternet(userKey);
-    }
+    IInternetDiscoverResultListener mInternetDiscoverResultListener = new IInternetDiscoverResultListener() {
+        @Override
+        public void onDeviceResultAdd(List<IIotDevice> devlist) {
+            mInternetList = (ArrayList<IIotDevice>) devlist;
+            mPresenter.handleIotAddress((ArrayList<IIotDevice>) devlist);
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
